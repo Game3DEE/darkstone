@@ -20,7 +20,12 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({ template: './src/index.html' }),
-    new CopyWebpackPlugin({ patterns: [ { from: 'assets', to: 'assets' }]}),
+    new CopyWebpackPlugin({
+      patterns: [
+        'README.md',
+        { from: 'assets', to: 'assets' },
+      ]},
+    ),
   ],
   output: {
     filename: '[name].bundle.js',
