@@ -5,8 +5,14 @@ import { GUI } from 'dat.gui';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+import AssetManager from './AssetManager';
+
 var container, stats;
 var camera, scene, renderer;
+
+var gui, archivesFolder;
+
+var assetManager = new AssetManager();
 
 function init() {
 
@@ -77,8 +83,20 @@ function init() {
 
   //
 
-  var gui = new GUI();
+  gui = new GUI();
+  archivesFolder = gui.addFolder('Archives');
+  archivesFolder.open();
+  gui.open();
 
+  // Done setting things up, now load the demo data...
+  fetch('assets/ddata.mtf').then(body => body.arrayBuffer()).then(
+    buffer => {
+      assetManager.addArchive(buffer, 'ddata.mtf');
+
+      let cdf = assetManager.getFile('data/cbs/town.cdf');
+      console.log(cdf);
+    }
+  );
 }
 
 //
