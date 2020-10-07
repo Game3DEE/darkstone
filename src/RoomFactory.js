@@ -20,8 +20,8 @@ export default class RoomFactory {
     // Parse the room data
     const cdf = new CDF(new KaitaiStream(arrayBuffer));
 
-    const centerX = (cdf.maxX - cdf.minX) / 2;
-    const centerY = (cdf.maxY - cdf.minY) / 2;
+    const centerX = cdf.minX + (cdf.maxX - cdf.minX) / 2;
+    const centerY = cdf.minY + (cdf.maxY - cdf.minY) / 2;
 
     let room = new Group();
     room.name = filename;
