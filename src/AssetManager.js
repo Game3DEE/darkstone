@@ -4,6 +4,10 @@ import KaitaiStream from 'kaitai-struct/KaitaiStream';
 
 import { win2nixFilename } from './utils';
 
+// This seems to be a network path from the developers,
+// dsed => DarkStone EDitor, dbg => DeBuG?
+const prefix = '/dsed/dgb/';
+
 export default class AssetManager {
   constructor() {
     this.archives = [];
@@ -12,6 +16,12 @@ export default class AssetManager {
   // Returns the content of 'filename' as ArrayBuffer,
   // or null if file is not found
   getFile(filename) {
+    // Strip network path prefix; if specified
+    // (o3d model paths in CDF/CBS files, for example)
+    if (filename.startsWith(prefix)) {
+      filename = filename.substring(prefix.length);
+    }
+
     for (let archive of this.archives) {
       let file = archive.fileMap.get(filename);
       if (file) {
