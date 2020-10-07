@@ -6,6 +6,8 @@ import { GUI } from 'dat.gui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import AssetManager from './AssetManager';
+import MeshFactory from './MeshFactory';
+import RoomFactory from './RoomFactory';
 
 var container, stats;
 var camera, scene, renderer;
@@ -13,6 +15,11 @@ var camera, scene, renderer;
 var gui, archivesFolder;
 
 var assetManager = new AssetManager();
+var meshFactory = new MeshFactory(assetManager);
+var roomFactory = new RoomFactory(meshFactory);
+
+const DemoMTFPath = 'assets/ddata.mtf';
+const defaultDemoRoom = 'data/cbs/town.cdf';
 
 function init() {
 
@@ -23,12 +30,12 @@ function init() {
 
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xcce0ff);
-  scene.fog = new THREE.Fog(0xcce0ff, 500, 10000);
+  //scene.fog = new THREE.Fog(0xcce0ff, 500, 10000);
 
   // camera
 
-  camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000);
-  camera.position.set(1000, 50, 1500);
+  camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 100900);
+  camera.position.set(24800, 3500, 14000);
 
   // lights
 
@@ -69,8 +76,8 @@ function init() {
   // controls
   var controls = new OrbitControls(camera, renderer.domElement);
   controls.maxPolarAngle = Math.PI * 0.5;
-  controls.minDistance = 1000;
-  controls.maxDistance = 5000;
+  //controls.minDistance = 1000;
+  //controls.maxDistance = 5000;
 
   // performance monitor
 
@@ -89,12 +96,13 @@ function init() {
   gui.open();
 
   // Done setting things up, now load the demo data...
-  fetch('assets/ddata.mtf').then(body => body.arrayBuffer()).then(
+  fetch(DemoMTFPath).then(body => body.arrayBuffer()).then(
     buffer => {
-      assetManager.addArchive(buffer, 'ddata.mtf');
+      assetManager.addArchive(buffer, DemoMTFPath);
 
-      let cdf = assetManager.getFile('data/cbs/town.cdf');
-      console.log(cdf);
+      let cdfData = assetManager.getFile(defaultDemoRoom);
+      let room = roomFactory.buildRoom(cdfData, defaultDemoRoom);
+      scene.add(room);
     }
   );
 }
