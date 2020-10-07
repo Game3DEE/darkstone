@@ -1,7 +1,5 @@
 import {
-  AmbientLight,
   Color,
-  DirectionalLight,
   Fog,
   PerspectiveCamera,
   Scene,
@@ -17,7 +15,7 @@ import AssetManager from './AssetManager';
 import MeshFactory from './MeshFactory';
 import RoomFactory from './RoomFactory';
 
-var container, stats;
+var container, stats, controls;
 var camera, scene, renderer;
 
 var gui, archivesFolder;
@@ -37,19 +35,18 @@ function init() {
   // scene
 
   scene = new Scene();
-  scene.background = new Color(0xcce0ff);
-  //scene.fog = new Fog(0xcce0ff, 500, 10000);
+  scene.background = new Color(0x000000);
+  scene.fog = new Fog(0x000000, 500, 10000);
 
   // camera
 
   camera = new PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 100900);
-  camera.position.set(24800, 3500, 14000);
+  camera.position.set(-728, 1695, 4616);
 
+  /*
   // lights
 
-  scene.add(new AmbientLight(0x666666));
-
-  var light = new DirectionalLight(0xdfebff, 1);
+  var light = new SpotLight(0xdfebff, 1);
   light.position.set(50, 200, 100);
   light.position.multiplyScalar(1.3);
 
@@ -68,6 +65,7 @@ function init() {
   light.shadow.camera.far = 1000;
 
   scene.add(light);
+  */
 
   // renderer
 
@@ -80,9 +78,10 @@ function init() {
   renderer.shadowMap.enabled = true;
 
   // controls
-  var controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 0, -1000);
   controls.maxPolarAngle = Math.PI * 0.5;
-  //controls.minDistance = 1000;
+  controls.minDistance = 1000;
   //controls.maxDistance = 5000;
 
   // performance monitor
@@ -96,7 +95,14 @@ function init() {
 
   //
 
+  let settings = {
+    disableFog: false,
+  };
+
   gui = new GUI();
+  gui.add(settings, 'disableFog').name('Disable Fog').onChange(v => {
+    scene.fog.far = v ? 0 : 10000;
+  })
   archivesFolder = gui.addFolder('Archives');
   archivesFolder.open();
   gui.open();
@@ -132,6 +138,7 @@ function animate() {
 
   renderer.render(scene, camera);
   stats.update();
+  controls.update();
 
 }
 
