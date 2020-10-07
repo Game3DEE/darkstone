@@ -2,7 +2,7 @@ import O3D from './kaitai/o3d.ksy';
 import KaitaiStream from 'kaitai-struct/KaitaiStream';
 
 import * as THREE from 'three';
-import { TGALoader } from 'three/examples/jsm/loaders/TGALoader';
+import { TGALoader } from './customized/TGALoader';
 
 export default class MeshFactory {
   constructor(assetManager) {
@@ -45,7 +45,7 @@ export default class MeshFactory {
         // console.log(f.flags);
         let map = this.getTexture(texNumber);
         materials.push(
-          new THREE.MeshLambertMaterial({ map })
+          new THREE.MeshBasicMaterial({ transparent: true, alphaTest: 0.5, map })
         )
       }
 
