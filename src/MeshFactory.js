@@ -1,7 +1,14 @@
 import O3D from './kaitai/o3d.ksy';
 import KaitaiStream from 'kaitai-struct/KaitaiStream';
 
-import * as THREE from 'three';
+import {
+  BufferGeometry,
+  Float32BufferAttribute,
+  Mesh,
+  MeshBasicMaterial,
+  Texture,
+} from 'three';
+
 import { TGALoader } from './customized/TGALoader';
 
 export default class MeshFactory {
@@ -45,7 +52,7 @@ export default class MeshFactory {
         // console.log(f.flags);
         let map = this.getTexture(texNumber);
         materials.push(
-          new THREE.MeshBasicMaterial({ transparent: true, alphaTest: 0.5, map })
+          new MeshBasicMaterial({ transparent: true, alphaTest: 0.5, map })
         )
       }
 
@@ -87,12 +94,12 @@ export default class MeshFactory {
       })
     }
 
-    let geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.Float32BufferAttribute(position, 3));
-    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    let geo = new BufferGeometry();
+    geo.setAttribute('position', new Float32BufferAttribute(position, 3));
+    geo.setAttribute('uv', new Float32BufferAttribute(uv, 2));
     groups.forEach(g => geo.addGroup(g.start, g.count, g.materialIndex));
     geo.computeVertexNormals();
-    let mesh = new THREE.Mesh(geo, materials);
+    let mesh = new Mesh(geo, materials);
     mesh.name = filename;
     return mesh;
   }
@@ -112,7 +119,7 @@ export default class MeshFactory {
     if (texData) {
       // If we got data, create the actual texture (assuming TGA format)
       const loader = new TGALoader();
-      const texture = new THREE.Texture();
+      const texture = new Texture();
       texture.image = loader.parse(texData);
       texture.needsUpdate = true;
       texture.flipY = false;

@@ -1,4 +1,12 @@
-import * as THREE from 'three';
+import {
+  AmbientLight,
+  Color,
+  DirectionalLight,
+  Fog,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+} from 'three';
 
 import Stats from 'stats.js';
 import { GUI } from 'dat.gui';
@@ -28,20 +36,20 @@ function init() {
 
   // scene
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xcce0ff);
-  //scene.fog = new THREE.Fog(0xcce0ff, 500, 10000);
+  scene = new Scene();
+  scene.background = new Color(0xcce0ff);
+  //scene.fog = new Fog(0xcce0ff, 500, 10000);
 
   // camera
 
-  camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 100900);
+  camera = new PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 100900);
   camera.position.set(24800, 3500, 14000);
 
   // lights
 
-  scene.add(new THREE.AmbientLight(0x666666));
+  scene.add(new AmbientLight(0x666666));
 
-  var light = new THREE.DirectionalLight(0xdfebff, 1);
+  var light = new DirectionalLight(0xdfebff, 1);
   light.position.set(50, 200, 100);
   light.position.multiplyScalar(1.3);
 
@@ -63,13 +71,11 @@ function init() {
 
   // renderer
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   container.appendChild(renderer.domElement);
-
-  renderer.outputEncoding = THREE.sRGBEncoding;
 
   renderer.shadowMap.enabled = true;
 

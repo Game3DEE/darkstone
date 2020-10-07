@@ -3,7 +3,9 @@ import KaitaiStream from 'kaitai-struct/KaitaiStream';
 
 import { win2nixFilename } from './utils';
 
-import * as THREE from 'three';
+import {
+  Group,
+} from 'three';
 
 // Dimension of block in OGL units
 const blockDimension = 512;
@@ -21,7 +23,7 @@ export default class RoomFactory {
     const centerX = (cdf.maxX - cdf.minX) / 2;
     const centerY = (cdf.maxY - cdf.minY) / 2;
 
-    let room = new THREE.Group();
+    let room = new Group();
     room.name = filename;
 
     // Get all blocks
