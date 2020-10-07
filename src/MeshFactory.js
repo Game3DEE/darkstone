@@ -2,6 +2,7 @@ import O3D from './kaitai/o3d.ksy';
 import KaitaiStream from 'kaitai-struct/KaitaiStream';
 
 import * as THREE from 'three';
+import { TGALoader } from 'three/examples/jsm/loaders/TGALoader';
 
 export default class MeshFactory {
   constructor(assetManager) {
@@ -42,10 +43,9 @@ export default class MeshFactory {
 
         texNumber = f.texNumber;
         // console.log(f.flags);
-        // let map = this.getTexture(texNumber, f.flags === 37 ? 'k' : 'r');
+        let map = this.getTexture(texNumber);
         materials.push(
-          new THREE.MeshNormalMaterial()
-          //new THREE.MeshLambertMaterial({ map })
+          new THREE.MeshLambertMaterial({ map })
         )
       }
 
@@ -95,5 +95,33 @@ export default class MeshFactory {
     let mesh = new THREE.Mesh(geo, materials);
     mesh.name = filename;
     return mesh;
+  }
+
+  getTexture(id) {
+    if (this.cache.has(id)) {
+      return this.cache.get(id);
+    }
+
+    // Create id with leading zeroes
+    const num = ('0000'+id).slice(-4);
+
+    // Create full regexp to match filename
+    // (being as specific as possible)
+    let re = new RegExp(`^data/bankdatabase/dragonblade/.${num}_.*.tga$`);
+    let texData = this.assetManager.getFileByRE(re);
+    if (texData) {
+      // If we got data, create the actual texture (assuming TGA format)
+      const loader = new TGALoader();
+      const texture = new THREE.Texture();
+      texture.image = loader.parse(texData);
+      texture.needsUpdate = true;
+      texture.flipY = false;
+
+      this.cache.set(id, texture);
+
+      return texture;
+    }
+
+    return null;
   }
 }

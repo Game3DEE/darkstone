@@ -36,6 +36,22 @@ export default class AssetManager {
     return null;
   }
 
+  getFileByRE(regexp) {
+    for (let archive of this.archives) {
+      for (let [name, file] of archive.fileMap) {
+        if (name.match(regexp)) {
+          if (file.isCompressed) {
+            return this.decompress(file);
+          }
+          return archive.arrayBuffer.slice(
+            file.offset, file.offset + file.size);
+        }
+      }
+    }
+
+    return null;
+  }
+
   // add an archive as source for assets
   addArchive(arrayBuffer, name) {
     // Load and parse the MTF archive
