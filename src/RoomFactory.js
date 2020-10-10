@@ -15,6 +15,9 @@ export default class RoomFactory {
     this.meshFactory = meshFactory;
   }
 
+  clear() {
+  }
+
   // Build 3D model of room
   buildRoom(arrayBuffer, filename) {
     // Parse the room data

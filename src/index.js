@@ -25,13 +25,18 @@ var currentRoom = null;
 
 var gui, archivesFolder;
 
+var demoFolder = null;
+
 var assetManager = new AssetManager();
 var meshFactory = new MeshFactory(assetManager);
 var roomFactory = new RoomFactory(meshFactory);
 
 function selectRoom(roomPath) {
-  let cdfData = assetManager.getFile(roomPath);
-  let room = roomFactory.buildRoom(cdfData, roomPath);
+  let room = null;
+  if (roomPath) {
+    let cdfData = assetManager.getFile(roomPath);
+    room = roomFactory.buildRoom(cdfData, roomPath);
+  }
   if (currentRoom) {
     scene.remove(currentRoom);
   }
@@ -42,6 +47,16 @@ function selectRoom(roomPath) {
 }
 
 function addArchive(buffer, name, defaultRoom) {
+  if (demoFolder) {
+    // If demo archive is active, remove it,
+    // clear all caches, as user is about to setup
+    // his/her own MTF stack
+    selectRoom(null);
+    assetManager.clear();
+    meshFactory.clear();
+    roomFactory.clear();
+    archivesFolder.removeFolder(demoFolder);
+  }
   // Add archive to asset manager
   let arch = assetManager.addArchive(buffer, name);
   // Add it to our UI
@@ -63,6 +78,8 @@ function addArchive(buffer, name, defaultRoom) {
   if (defaultRoom) {
     selectRoom(defaultRoom);
   }
+
+  return af;
 }
 
 function init() {
@@ -133,6 +150,11 @@ function init() {
 
   //
 
+  container.addEventListener( 'drop', dropHandler, false );
+  container.addEventListener( 'dragover', dragOverHandler, false );
+
+  //
+
   let globalSettings = {
     disableFog: false,
   };
@@ -148,7 +170,7 @@ function init() {
   // Done setting things up, now load the demo data...
   fetch(DemoMTFPath).then(body => body.arrayBuffer()).then(
     buffer => {
-      addArchive(buffer, DemoMTFPath, defaultDemoRoom);
+      demoFolder = addArchive(buffer, DemoMTFPath, defaultDemoRoom);
     }
   );
 }
@@ -162,6 +184,60 @@ function onWindowResize() {
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
+}
+
+//
+
+function getExtension(filename) {
+  return filename.split('.').pop();
+}
+
+async function dropHandler(ev) {
+
+  async function handleFile(file) {
+    let ext = getExtension(file.name)
+    if (ext.toLowerCase() === 'mtf') {
+      let url = URL.createObjectURL(file)
+      let buf = await (await fetch(url)).arrayBuffer()
+      addArchive(buf, file.name)
+    }
+  }
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault()
+  if (ev.dataTransfer.items) {
+    // Use DataTransferItemList interface to access the file(s)
+    for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+      // If dropped items aren't files, reject them
+      if (ev.dataTransfer.items[i].kind === 'file') {
+        var file = ev.dataTransfer.items[i].getAsFile()
+        await handleFile( file )
+      }
+    }
+  } else {
+    // Use DataTransfer interface to access the file(s)
+    for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+      await handleFile( ev.dataTransfer.files[i] )
+    }
+  }
+
+  // Pass event to removeDragData for cleanup
+  removeDragData(ev)
+}
+
+function dragOverHandler(ev) {
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+}
+
+function removeDragData(ev) {
+  if (ev.dataTransfer.items) {
+    // Use DataTransferItemList interface to remove the drag data
+    ev.dataTransfer.items.clear();
+  } else {
+    // Use DataTransfer interface to remove the drag data
+    ev.dataTransfer.clearData();
+  }
 }
 
 //

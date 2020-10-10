@@ -17,6 +17,10 @@ export default class MeshFactory {
     this.assetManager = assetManager;
   }
 
+  clear() {
+    this.cache.clear();
+  }
+
   getMesh(filename) {
     let mesh = this.cache.get(filename);
     if (!mesh) {
