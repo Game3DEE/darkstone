@@ -21,7 +21,7 @@ const defaultDemoRoom = 'data/cbs/town.cdf';
 var container, stats, controls;
 var camera, scene, renderer;
 
-var currentRoom = null;
+var currentObject = null;
 
 var gui, archivesFolder;
 
@@ -31,18 +31,22 @@ var assetManager = new AssetManager();
 var meshFactory = new MeshFactory(assetManager);
 var roomFactory = new RoomFactory(meshFactory);
 
+function selectObject(object) {
+  if (currentObject) {
+    scene.remove(currentObject);
+  }
+  currentObject = object;
+  if (currentObject) {
+    scene.add(currentObject);
+  }
+}
+
 function selectRoom(roomPath) {
-  let room = null;
-  if (roomPath) {
-    let cdfData = assetManager.getFile(roomPath);
-    room = roomFactory.buildRoom(cdfData, roomPath);
-  }
-  if (currentRoom) {
-    scene.remove(currentRoom);
-  }
-  currentRoom = room;
-  if (currentRoom) {
-    scene.add(currentRoom);
+  let cdfData = assetManager.getFile(roomPath);
+  if (cdfData) {
+    selectObject( roomFactory.buildRoom(cdfData, roomPath) );
+  } else {
+    selectObject( null );
   }
 }
 
@@ -51,7 +55,7 @@ function addArchive(buffer, name, defaultRoom) {
     // If demo archive is active, remove it,
     // clear all caches, as user is about to setup
     // his/her own MTF stack
-    selectRoom(null);
+    selectObject(null);
     assetManager.clear();
     meshFactory.clear();
     roomFactory.clear();
@@ -62,17 +66,25 @@ function addArchive(buffer, name, defaultRoom) {
   // Add it to our UI
   let settings = {
     room: defaultRoom || '',
+    object: '',
   }
-  let rooms = [];
+  let rooms = [], objects = [];
   arch.fileMap.forEach( (_, fname) => {
     if (fname.endsWith('.cdf')) {
       rooms.push(fname);
+    } else if (fname.endsWith('.o3d')) {
+      objects.push(fname);
     }
   });
   let af = archivesFolder.addFolder(name);
   af.open();
   af.add(settings, 'room', rooms).onFinishChange(path => {
     selectRoom(path);
+  });
+  af.add(settings, 'object', objects).onFinishChange(path => {
+    let data = assetManager.getFile(path);
+    let mesh = meshFactory.createMesh(data, path);
+    selectObject(mesh);
   });
 
   if (defaultRoom) {
