@@ -22,21 +22,43 @@ types:
         size: 64
         repeat: expr
         repeat-expr: 8
-    
+
+
+  sub_block:
+    seq:
+      - contents: [ 1, 0 ]
+      - id: name1
+        type: strz
+        size: 64
+      - id: name2
+        type: strz
+        size: 64
+      - id: strings
+        type: strz
+        size: 64
+        repeat: expr
+        repeat-expr: 8
+        
+  block:
+    seq:
+      - contents: [ 1, 0 ]
+      - id: count
+        type: u4
+      - id: name
+        type: strz
+        size: 64
+      - id: sub_blocks
+        type: sub_block
+        repeat: expr
+        repeat-expr: count
 
 seq:
   - contents: [ 1, 0 ]
   - id: count
     type: u4
-    
-  - id: id
-    type: u2
-  - id: val
-    type: u4
-  - id: name
-    type: strz
-    size: 64
-  - id: items
-    type: item
+
+  - id: blocks
+    type: block
     repeat: expr
-    repeat-expr: val
+    repeat-expr: count
+

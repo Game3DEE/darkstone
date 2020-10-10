@@ -1,42 +1,69 @@
 meta:
-  id: darkstone_anb
-  title: Darkstone ANB file
+  id: anb
   file-extension: anb
   endian: le
   encoding: utf8
 
-seq:
-  - contents: [ 1, 0 ]
-  - id: count
-    type: u4
-  - id: items
-    type: item
-    repeat: expr
-    repeat-exir: count
-
 types:
-  item:
+  bytes:
     seq:
-      - id: short # [0..3]
+      - id: number
+        type: u4
+      - id: short_value # 01 00
         type: u2
-      - id: name1
-        type: strz
-        size: 64
-      - id: name2
-        type: strz
-        size: 64
-      - id: name3
-        type: strz
-        size: 64
-      - id: val1
+      - id: flag
         type: u4
-      - id: val2
-        type: u4
-      - id: val3
-        type: u4
-      - id: val4
-        type: u4
-      - id: val4
-        type: u4
-      - id: data
-        size: val4 * 2
+
+      - id: bytes
+        type: f4
+        repeat: expr
+        repeat-expr: (flag+2)*3
+
+  block:
+    seq:
+    - id: str_count # 03 00
+      type: u2
+    - id: string64s
+      type: str
+      size: 64
+      repeat: expr
+      repeat-expr: str_count
+
+    - id: count4
+      type: u4
+      repeat: expr
+      repeat-expr: 4
+
+    - id: short_count
+      type: u4
+    - id: short_value
+      type: u2
+      repeat: expr
+      repeat-expr: short_count
+    - id: str_values
+      type: str
+      size: 64
+      repeat: expr
+      repeat-expr: short_count
+    
+    - id: value_count
+      type: u4
+    - id: bytes
+      type: bytes
+      repeat: expr
+      repeat-expr: value_count
+
+    - id: delimetr
+      type: u1
+      repeat: expr
+      repeat-expr: 16
+
+seq:
+  - contents: [ 1, 0]
+  - id: block_count
+    type: u4
+  - id: blocks
+    type: block
+    repeat: expr
+    repeat-expr: block_count
+
