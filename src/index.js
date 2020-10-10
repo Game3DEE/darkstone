@@ -15,8 +15,13 @@ import AssetManager from './AssetManager';
 import MeshFactory from './MeshFactory';
 import RoomFactory from './RoomFactory';
 
+const DemoMTFPath = 'assets/ddata.mtf';
+const defaultDemoRoom = 'data/cbs/town.cdf';
+
 var container, stats, controls;
 var camera, scene, renderer;
+
+var currentRoom = null;
 
 var gui, archivesFolder;
 
@@ -24,8 +29,41 @@ var assetManager = new AssetManager();
 var meshFactory = new MeshFactory(assetManager);
 var roomFactory = new RoomFactory(meshFactory);
 
-const DemoMTFPath = 'assets/ddata.mtf';
-const defaultDemoRoom = 'data/cbs/town.cdf';
+function selectRoom(roomPath) {
+  let cdfData = assetManager.getFile(roomPath);
+  let room = roomFactory.buildRoom(cdfData, roomPath);
+  if (currentRoom) {
+    scene.remove(currentRoom);
+  }
+  currentRoom = room;
+  if (currentRoom) {
+    scene.add(currentRoom);
+  }
+}
+
+function addArchive(buffer, name, defaultRoom) {
+  // Add archive to asset manager
+  let arch = assetManager.addArchive(buffer, name);
+  // Add it to our UI
+  let settings = {
+    room: defaultRoom || '',
+  }
+  let rooms = [];
+  arch.fileMap.forEach( (_, fname) => {
+    if (fname.endsWith('.cdf')) {
+      rooms.push(fname);
+    }
+  });
+  let af = archivesFolder.addFolder(name);
+  af.open();
+  af.add(settings, 'room', rooms).onFinishChange(path => {
+    selectRoom(path);
+  });
+
+  if (defaultRoom) {
+    selectRoom(defaultRoom);
+  }
+}
 
 function init() {
 
@@ -95,12 +133,12 @@ function init() {
 
   //
 
-  let settings = {
+  let globalSettings = {
     disableFog: false,
   };
 
   gui = new GUI();
-  gui.add(settings, 'disableFog').name('Disable Fog').onChange(v => {
+  gui.add(globalSettings, 'disableFog').name('Disable Fog').onChange(v => {
     scene.fog.far = v ? 0 : 10000;
   })
   archivesFolder = gui.addFolder('Archives');
@@ -110,11 +148,7 @@ function init() {
   // Done setting things up, now load the demo data...
   fetch(DemoMTFPath).then(body => body.arrayBuffer()).then(
     buffer => {
-      assetManager.addArchive(buffer, DemoMTFPath);
-
-      let cdfData = assetManager.getFile(defaultDemoRoom);
-      let room = roomFactory.buildRoom(cdfData, defaultDemoRoom);
-      scene.add(room);
+      addArchive(buffer, DemoMTFPath, defaultDemoRoom);
     }
   );
 }

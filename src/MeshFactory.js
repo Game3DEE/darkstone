@@ -27,6 +27,11 @@ export default class MeshFactory {
       }
     }
 
+    if (!mesh) {
+      console.error(`Mesh ${filename} could not be loaded!`);
+      return null;
+    }
+
     return mesh.clone();
   }
 

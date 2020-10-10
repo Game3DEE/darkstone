@@ -52,6 +52,10 @@ export default class AssetManager {
     return null;
   }
 
+  clear() {
+    this.archives = [];
+  }
+
   // add an archive as source for assets
   addArchive(arrayBuffer, name) {
     // Load and parse the MTF archive
@@ -73,6 +77,9 @@ export default class AssetManager {
       arrayBuffer,
       fileMap,
     });
+
+    // Return archive info to caller
+    return this.archives[0];
   }
 
   // Decompresses a file from the archive
