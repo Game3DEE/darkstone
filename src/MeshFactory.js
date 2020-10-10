@@ -82,7 +82,7 @@ export default class MeshFactory {
         uv.push(
           f.texCoords[2].x / 256, f.texCoords[2].y / 256,
           f.texCoords[0].x / 256, f.texCoords[0].y / 256,
-          f.texCoords[1].x / 256, f.texCoords[1].y / 256,
+          f.texCoords[3].x / 256, f.texCoords[3].y / 256,
         );
         position.push(
           model.vertices[a].x, model.vertices[a].y, -model.vertices[a].z,
