@@ -4,10 +4,6 @@ meta:
   endian: le
   encoding: utf8
 
-# TODO: zbonus_b_5.cdf does not parse
-# this is likely due to the named entries
-# in "zeroes"
-
 types:
   block:
     seq:
