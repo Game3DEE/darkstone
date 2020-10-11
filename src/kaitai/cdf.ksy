@@ -50,6 +50,14 @@ types:
 
   trap:
     seq:
+      - id: x
+        type: u4
+      - id: y
+        type: u4
+      - id: type
+        type: u4
+      - id: rotation
+        type: u4
       - id: data
         type: u4
         repeat: expr
@@ -59,7 +67,7 @@ types:
         size: 32
     instances:
       data_count:
-        value: "_root.version <= 3 ? 17 : 25"
+        value: "_root.version <= 3 ? 13 : 21"
 
 seq:
   - contents: [ "CDF", 0 ]
