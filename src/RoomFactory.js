@@ -29,26 +29,20 @@ export default class RoomFactory {
     // Parse the room data
     const cdf = new CDF(new KaitaiStream(arrayBuffer));
 
-    const centerX = cdf.minX + (cdf.maxX - cdf.minX) / 2;
-    const centerY = cdf.minY + (cdf.maxY - cdf.minY) / 2;
+    const offsetX = (cdf.minX + (cdf.maxX - cdf.minX) / 2) * blockGridSize;
+    const offsetY = (cdf.minY + (cdf.maxY - cdf.minY) / 2) * blockGridSize;
 
     let room = new Group();
     room.name = filename;
-
-    room.position.set(
-      -centerX * blockGridSize,
-      0,
-      -centerY * blockGridSize,
-    )
 
     // Get all blocks
     cdf.blocks.forEach(block => {
       let mesh = this.meshFactory.getMesh(win2nixFilename(block.path));
       if (mesh) {
         mesh.position.set(
-          block.x * blockGridSize, 
+          block.x * blockGridSize - offsetX,
           0,
-          block.y * blockGridSize,
+          block.y * blockGridSize - offsetY,
         );
         mesh.rotation.y = -(Math.PI / 2) * block.rotation;
         room.add(mesh);
@@ -67,16 +61,17 @@ export default class RoomFactory {
       } else {
         let mesh = null;
         if (!trapInfo.meshes.length) {
-          mesh = new Mesh(new BoxGeometry(10,10,10), new MeshNormalMaterial());
+          // XX are these waypoints?
+          //mesh = new Mesh(new BoxGeometry(10,10,10), new MeshNormalMaterial());
         } else {
           mesh = this.meshFactory.getMesh(trapInfo.meshes[0]);
         }
 
         if (mesh) {
           mesh.position.set(
-            trap.x * trapGridSize,
+            trap.x * trapGridSize - offsetX - trapGridSize,
             0,
-            trap.y * trapGridSize,
+            trap.y * trapGridSize - offsetY - trapGridSize,
           )
           mesh.rotation.y = -(Math.PI / 2) * trap.rotation;
           room.add(mesh);
