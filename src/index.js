@@ -67,13 +67,16 @@ function addArchive(buffer, name, defaultRoom) {
   let settings = {
     room: defaultRoom || '',
     object: '',
+    character: '',
   }
-  let rooms = [], objects = [];
+  let rooms = [], objects = [], skeletons = [];
   arch.fileMap.forEach( (_, fname) => {
     if (fname.endsWith('.cdf')) {
       rooms.push(fname);
     } else if (fname.endsWith('.o3d')) {
       objects.push(fname);
+    } else if (fname.endsWith('.mbr')) {
+      skeletons.push(fname);
     }
   });
   let af = archivesFolder.addFolder(name);
@@ -84,6 +87,11 @@ function addArchive(buffer, name, defaultRoom) {
   af.add(settings, 'object', objects).onFinishChange(path => {
     let data = assetManager.getFile(path);
     let mesh = meshFactory.createMesh(data, path);
+    selectObject(mesh);
+  });
+  af.add(settings, 'character', skeletons).onFinishChange(path => {
+    let data = assetManager.getFile(path);
+    let mesh = meshFactory.createMBR(data, path);
     selectObject(mesh);
   });
 

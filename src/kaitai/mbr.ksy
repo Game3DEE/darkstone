@@ -5,6 +5,17 @@ meta:
   encoding: utf8
 
 types:
+  bgra:
+    seq:
+      - id: b
+        type: u1
+      - id: g
+        type: u1
+      - id: r
+        type: u1
+      - id: a
+        type: u1
+
   vector3f:
     seq:
       - id: x
@@ -21,99 +32,93 @@ types:
       - id: y
         type: f4
 
-  short5:
-    seq:
-      - id: shorts
-        type: u2
-        repeat: expr
-        repeat-expr: 5
 
+  # Same structure as in O3D file
   face:
     seq:
       - id: color
-        type: u1
-        repeat: expr
-        repeat-expr: 4
-
+        type: bgra
       - id: tex_coords
         type: vector2f
         repeat: expr
         repeat-expr: 4
-
       - id: indices
         type: u2
         repeat: expr
         repeat-expr: 4
-
       - id: flags
         type: u4
       - id: tex_number
         type: u2
-
 
   submesh:
     seq:
     - id: version
       type: u2
 
-    - id: names
+    - id: name1
       type: strz
       size: 48
-      repeat: expr
-      repeat-expr: 2
 
-    - id: floats9x3
-      type: f4
-      repeat: expr
-      repeat-expr: 9 * 3
+    - id: name2
+      type: strz
+      size: 48
 
-    - id: count_vertices
+    - id: position
+      type: vector3f
+    - id: v8
+      type: vector3f
+      repeat: expr
+      repeat-expr: 8
+
+    - id: vertex_count
       type: u4
-
-    - id: count_faces
+    - id: face_count
       type: u4
 
     - id: vertices
       type: vector3f
       repeat: expr
-      repeat-expr: count_vertices
+      repeat-expr: vertex_count
 
     - id: faces
       type: face
       repeat: expr
-      repeat-expr: count_faces
+      repeat-expr: face_count
 
-    - id: triplet_int # texture references for polygons?
+    - id: vertex_values
       type: u4
       repeat: expr
-      repeat-expr: count_vertices
+      repeat-expr: vertex_count
 
-    - id: count_float
+    - id: face_count2
       type: u4
       if: version == 2
 
-    - id: float_8
+    - id: faces2
       type: face
       repeat: expr
-      repeat-expr: count_float
-      if: count_float > 0
+      repeat-expr: face_count2
+      if: version == 2
 
-    - id: short_5
-      type: short5
+    - id: unknown
+      size: 10
       repeat: expr
-      repeat-expr: count_float
-      if: count_float > 0
+      repeat-expr: face_count2
+      if: version == 2
 
-    - id: float_6
-      type: f4
-      repeat: expr
-      repeat-expr: 6
+    - id: v2_vec1
+      type: vector3f
+      if: version == 2
+    - id: v2_vec2
+      type: vector3f
+      if: version == 2
 
 seq:
   - contents: [ 1, 0 ]
   - id: submesh_count
     type: u4
-  - id: submeshes
+  - id: sub_meshes
     type: submesh
     repeat: expr
     repeat-expr: submesh_count

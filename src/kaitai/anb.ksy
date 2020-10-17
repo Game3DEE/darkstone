@@ -5,65 +5,79 @@ meta:
   encoding: utf8
 
 types:
-  bytes:
+  vector3f:
     seq:
-      - id: number
-        type: u4
-      - id: short_value # 01 00
-        type: u2
-      - id: flag
-        type: u4
-
-      - id: bytes
+      - id: x
         type: f4
-        repeat: expr
-        repeat-expr: (flag+2)*3
+      - id: y
+        type: f4
+      - id: z
+        type: f4
 
-  block:
+  sub_block:
     seq:
-    - id: str_count # 03 00
+      - id: some_val
+        type: u4
+      - contents: [ 1, 0 ]
+      - id: count
+        type: u4
+      - id: v1
+        type: vector3f
+      - id: v2
+        type: vector3f
+      - id: vertices
+        type: vector3f
+        repeat: expr
+        repeat-expr: count
+
+  animation:
+    seq:
+    - id: version  # 1,2,3
       type: u2
-    - id: string64s
-      type: str
+    - id: name
+      type: strz
+      size: 64
+    - id: name2
+      type: strz
+      size: 64
+    - id: name3
+      type: strz
+      size: 64
+    - id: val1
+      type: u4
+    - id: val2
+      type: u4
+    - id: val3
+      type: u4
+    - id: val4
+      type: u4
+    - id: val5
+      type: u4
+    - id: val5_shorts
+      type: s2
+      repeat: expr
+      repeat-expr: val5
+    - id: val5_strings
+      type: strz
       size: 64
       repeat: expr
-      repeat-expr: str_count
-
-    - id: count4
+      repeat-expr: val5
+    - id: val6
+      type: u4
+    - id: blocks
+      type: sub_block
+      repeat: expr
+      repeat-expr: val6
+    - id: ffs
       type: u4
       repeat: expr
       repeat-expr: 4
 
-    - id: short_count
-      type: u4
-    - id: short_value
-      type: u2
-      repeat: expr
-      repeat-expr: short_count
-    - id: str_values
-      type: str
-      size: 64
-      repeat: expr
-      repeat-expr: short_count
-    
-    - id: value_count
-      type: u4
-    - id: bytes
-      type: bytes
-      repeat: expr
-      repeat-expr: value_count
-
-    - id: delimetr
-      type: u1
-      repeat: expr
-      repeat-expr: 16
-
 seq:
   - contents: [ 1, 0]
-  - id: block_count
+  - id: animation_count
     type: u4
-  - id: blocks
-    type: block
+  - id: animations
+    type: animation
     repeat: expr
-    repeat-expr: block_count
-
+    repeat-expr: animation_count

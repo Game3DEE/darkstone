@@ -1,9 +1,12 @@
 import O3D from './kaitai/o3d.ksy';
+import MBR from './kaitai/mbr.ksy';
+
 import KaitaiStream from 'kaitai-struct/KaitaiStream';
 
 import {
   BufferGeometry,
   Float32BufferAttribute,
+  Group,
   Mesh,
   MeshBasicMaterial,
   Texture,
@@ -39,14 +42,27 @@ export default class MeshFactory {
     return mesh.clone();
   }
 
-  createMesh(arrayBuffer, filename) {
-    let model = new O3D(new KaitaiStream(arrayBuffer));
+  createMBR(arrayBuffer, filename) {
+    let model = new MBR(new KaitaiStream(arrayBuffer));
+    console.log(model);
+    let group = new Group();
+    model.subMeshes.forEach(sub => {
+      let mesh = this._createMesh(sub.vertices, sub.faces);
+      mesh.position.set(sub.position.x, sub.position.y, -sub.position.z);
+      group.add(mesh);
+    })
+    group.name = filename;
+    group.rotation.y = Math.PI / 4;
+    return group;
+  }
+
+  _createMesh(vertices, faces) {
     let materials = [];
     let position = [];
     let uv = [];
     let groups = [];
     let texNumber = -1;
-    model.faces.forEach(f => {
+    faces.forEach(f => {
       if (texNumber != f.texNumber) {
         if (groups.length) {
           let idx = groups.length - 1;
@@ -72,9 +88,9 @@ export default class MeshFactory {
         f.texCoords[1].x / 256, f.texCoords[1].y / 256,
       );
       position.push(
-        model.vertices[a].x, model.vertices[a].y, -model.vertices[a].z,
-        model.vertices[b].x, model.vertices[b].y, -model.vertices[b].z,
-        model.vertices[c].x, model.vertices[c].y, -model.vertices[c].z,
+        vertices[a].x, vertices[a].y, -vertices[a].z,
+        vertices[b].x, vertices[b].y, -vertices[b].z,
+        vertices[c].x, vertices[c].y, -vertices[c].z,
       );
 
       if (f.indices[3] != 0xffff) {
@@ -85,9 +101,9 @@ export default class MeshFactory {
           f.texCoords[3].x / 256, f.texCoords[3].y / 256,
         );
         position.push(
-          model.vertices[a].x, model.vertices[a].y, -model.vertices[a].z,
-          model.vertices[b].x, model.vertices[b].y, -model.vertices[b].z,
-          model.vertices[c].x, model.vertices[c].y, -model.vertices[c].z,
+          vertices[a].x, vertices[a].y, -vertices[a].z,
+          vertices[b].x, vertices[b].y, -vertices[b].z,
+          vertices[c].x, vertices[c].y, -vertices[c].z,
         );
       }
     });
@@ -109,6 +125,12 @@ export default class MeshFactory {
     groups.forEach(g => geo.addGroup(g.start, g.count, g.materialIndex));
     geo.computeVertexNormals();
     let mesh = new Mesh(geo, materials);
+    return mesh;
+  }
+
+  createMesh(arrayBuffer, filename) {
+    let model = new O3D(new KaitaiStream(arrayBuffer));
+    let mesh = this._createMesh(model.vertices, model.faces)
     mesh.name = filename;
     return mesh;
   }
