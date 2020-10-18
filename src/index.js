@@ -75,8 +75,8 @@ function addArchive(buffer, name, defaultRoom) {
       rooms.push(fname);
     } else if (fname.endsWith('.o3d')) {
       objects.push(fname);
-    } else if (fname.endsWith('.mbr')) {
-      skeletons.push(fname);
+    } else if (fname.endsWith('.ska') && fname.startsWith('data/skeletons/')) {
+      skeletons.push(fname.slice(0,fname.length -4));
     }
   });
   let af = archivesFolder.addFolder(name);
@@ -90,9 +90,10 @@ function addArchive(buffer, name, defaultRoom) {
     selectObject(mesh);
   });
   af.add(settings, 'character', skeletons).onFinishChange(path => {
-    let data = assetManager.getFile(path);
-    let mesh = meshFactory.createMBR(data, path);
-    selectObject(mesh);
+    let skaBuffer = assetManager.getFile(`${path}.ska`)
+    let mbrBuffer = assetManager.getFile(`${path}.mbr`)
+    let mesh = meshFactory.createModel(mbrBuffer, skaBuffer, path)
+    selectObject(mesh)
   });
 
   if (defaultRoom) {

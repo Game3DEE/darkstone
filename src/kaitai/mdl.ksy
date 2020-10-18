@@ -1,64 +1,48 @@
 meta:
   id: darkstone_mdl
-  title: Darkstone MDL file
+  title: Darkstone Model Hierarchy
+  application: All DSI Darkstone versions
   file-extension: mdl
   endian: le
   encoding: utf8
 
 types:
-  item:
+
+  bone:
     seq:
-      - id: used
-        type: u2
-      - id: name2
+      - contents: [ 1, 0 ]
+      - id: name
         type: strz
         size: 64
-      - id: name3
+      - id: parent_name
         type: strz
         size: 64
-        
-      - id: data
+      - id: attachments
         type: strz
         size: 64
+        doc: empty strings for all files in Darkstone distribution
         repeat: expr
         repeat-expr: 8
 
-
-  sub_block:
+  skeleton:
     seq:
       - contents: [ 1, 0 ]
-      - id: name1
-        type: strz
-        size: 64
-      - id: name2
-        type: strz
-        size: 64
-      - id: strings
-        type: strz
-        size: 64
-        repeat: expr
-        repeat-expr: 8
-        
-  block:
-    seq:
-      - contents: [ 1, 0 ]
-      - id: count
+      - id: bone_count
         type: u4
       - id: name
         type: strz
         size: 64
-      - id: sub_blocks
-        type: sub_block
+      - id: bones
+        type: bone
         repeat: expr
-        repeat-expr: count
+        repeat-expr: bone_count
 
 seq:
   - contents: [ 1, 0 ]
-  - id: count
+  - id: skeleton_count
     type: u4
 
-  - id: blocks
-    type: block
+  - id: skeletons
+    type: skeleton
     repeat: expr
-    repeat-expr: count
-
+    repeat-expr: skeleton_count

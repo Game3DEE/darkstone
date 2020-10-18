@@ -1,5 +1,6 @@
 import O3D from './kaitai/o3d.ksy';
 import MBR from './kaitai/mbr.ksy';
+import SKA from './kaitai/ska.ksy';
 
 import KaitaiStream from 'kaitai-struct/KaitaiStream';
 
@@ -42,18 +43,42 @@ export default class MeshFactory {
     return mesh.clone();
   }
 
-  createMBR(arrayBuffer, filename) {
-    let model = new MBR(new KaitaiStream(arrayBuffer));
-    console.log(model);
+  createModel(mbrBuffer, skaBuffer, filename) {
+    let mbr = new MBR(new KaitaiStream(mbrBuffer));
+    let ska = new SKA(new KaitaiStream(skaBuffer));
+
     let group = new Group();
-    model.subMeshes.forEach(sub => {
-      let mesh = this._createMesh(sub.vertices, sub.faces);
-      mesh.position.set(sub.position.x, sub.position.y, -sub.position.z);
-      group.add(mesh);
-    })
     group.name = filename;
-    group.rotation.y = Math.PI / 4;
+    //group.rotation.y = Math.PI / 4;
+    let offset = 0;
+
+    ska.blocks.forEach(blk => {
+      let skelGrp = new Group();
+      skelGrp.name = `${blk.name1}/${blk.name2}`;
+      skelGrp.position.x = offset;
+      offset += 512;
+
+      mbr.subMeshes.forEach(sub => {
+        if (blk.strings.indexOf(sub.name) != -1) {
+          let mesh = this._createMesh(sub.vertices, sub.faces);
+          mesh.position.set(sub.position.x, sub.position.y, -sub.position.z);
+          mesh.name = sub.name;
+          mesh.userData.type = sub.type;
+          skelGrp.add(mesh);
+        }
+      })
+
+      group.add(skelGrp);
+    })
+
     return group;
+  }
+
+  createMesh(arrayBuffer, filename) {
+    let model = new O3D(new KaitaiStream(arrayBuffer));
+    let mesh = this._createMesh(model.vertices, model.faces)
+    mesh.name = filename;
+    return mesh;
   }
 
   _createMesh(vertices, faces) {
@@ -125,13 +150,6 @@ export default class MeshFactory {
     groups.forEach(g => geo.addGroup(g.start, g.count, g.materialIndex));
     geo.computeVertexNormals();
     let mesh = new Mesh(geo, materials);
-    return mesh;
-  }
-
-  createMesh(arrayBuffer, filename) {
-    let model = new O3D(new KaitaiStream(arrayBuffer));
-    let mesh = this._createMesh(model.vertices, model.faces)
-    mesh.name = filename;
     return mesh;
   }
 

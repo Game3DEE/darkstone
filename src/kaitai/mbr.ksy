@@ -33,8 +33,8 @@ types:
         type: f4
 
 
-  # Same structure as in O3D file
   face:
+    doc: exact same face format as in the O3D format.
     seq:
       - id: color
         type: bgra
@@ -56,16 +56,20 @@ types:
     - id: version
       type: u2
 
-    - id: name1
+    - id: name
       type: strz
       size: 48
+      doc: unique name for submesh (matching with names in related files, e.g. bone names in MDL files)
 
-    - id: name2
+    - id: type
       type: strz
       size: 48
+      doc: identifier for type of mesh, eg. weapon, shield, bone, ....
 
     - id: position
       type: vector3f
+      doc: absolute position of submesh in shared parent coordinates.
+
     - id: v8
       type: vector3f
       repeat: expr
