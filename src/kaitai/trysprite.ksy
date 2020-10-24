@@ -22,9 +22,7 @@ types:
       - id: val5
         type: u2
       - id: val6
-        type: u2
-      - id: val7
-        type: u2
+        type: u4
 
 seq:
   - contents: [ 1, 0 ]

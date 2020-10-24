@@ -11,6 +11,7 @@ types:
       - id: name
         type: strz
         size: 32
+        doc: name of o3d file in data/common/meshes directory.
 
 seq:
   - contents: [ 1, 0 ]

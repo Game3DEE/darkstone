@@ -14,9 +14,9 @@ types:
       - id: z
         type: f4
 
-  sub_block:
+  key_frame:
     seq:
-      - id: some_val
+      - id: timing
         type: u4
       - contents: [ 1, 0 ]
       - id: count
@@ -37,10 +37,10 @@ types:
     - id: name
       type: strz
       size: 64
-    - id: name2
+    - id: model_name
       type: strz
       size: 64
-    - id: name3
+    - id: model_type_name
       type: strz
       size: 64
     - id: val1
@@ -51,23 +51,23 @@ types:
       type: u4
     - id: val4
       type: u4
-    - id: val5
+    - id: part_count
       type: u4
-    - id: val5_shorts
+    - id: part_ids
       type: s2
       repeat: expr
-      repeat-expr: val5
-    - id: val5_strings
+      repeat-expr: part_count
+    - id: part_names
       type: strz
       size: 64
       repeat: expr
-      repeat-expr: val5
-    - id: val6
+      repeat-expr: part_count
+    - id: key_frame_count
       type: u4
-    - id: blocks
-      type: sub_block
+    - id: key_frames
+      type: key_frame
       repeat: expr
-      repeat-expr: val6
+      repeat-expr: key_frame_count
     - id: ffs
       type: u4
       repeat: expr

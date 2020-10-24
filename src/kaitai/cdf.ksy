@@ -45,7 +45,7 @@ types:
       - id: name
         type: strz
         size: 32
-      - id: vala
+      - id: rotation
         type: u4
 
   trap:
