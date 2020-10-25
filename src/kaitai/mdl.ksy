@@ -1,10 +1,14 @@
 meta:
   id: darkstone_mdl
-  title: Darkstone Model Hierarchy
+  title: Darkstone model part list
   application: All DSI Darkstone versions
   file-extension: mdl
-  endian: le
+  license: CC0
   encoding: utf8
+  endian: le
+  doc: |
+    This file format lists which submeshes (parts) belong to a specific model. A model in this context
+    is a basic configuration of a character in the game.
 
 types:
 
@@ -24,25 +28,25 @@ types:
         repeat: expr
         repeat-expr: 8
 
-  skeleton:
+  model:
     seq:
       - contents: [ 1, 0 ]
-      - id: bone_count
+      - id: part_count
         type: u4
       - id: name
         type: strz
         size: 64
-      - id: bones
-        type: bone
+      - id: parts
+        type: parts
         repeat: expr
-        repeat-expr: bone_count
+        repeat-expr: part_count
 
 seq:
   - contents: [ 1, 0 ]
-  - id: skeleton_count
+  - id: model_count
     type: u4
 
-  - id: skeletons
-    type: skeleton
+  - id: models
+    type: model
     repeat: expr
-    repeat-expr: skeleton_count
+    repeat-expr: model_count

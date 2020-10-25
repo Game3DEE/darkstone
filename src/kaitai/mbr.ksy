@@ -1,8 +1,14 @@
 meta:
   id: darkstone_mbr
+  title: Darkstone model part meshes
+  application: All DSI Darkstone versions
   file-extension: mbr
+  license: CC0
   endian: le
   encoding: utf8
+doc: |
+  This file format contains all submeshes for a particular model, including
+  clothes and weapons.
 
 types:
   bgra:

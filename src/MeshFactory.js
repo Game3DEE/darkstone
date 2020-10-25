@@ -52,14 +52,14 @@ export default class MeshFactory {
     //group.rotation.y = Math.PI / 4;
     let offset = 0;
 
-    ska.blocks.forEach(blk => {
+    ska.skeletons.forEach(skel => {
       let skelGrp = new Group();
-      skelGrp.name = `${blk.name1}/${blk.name2}`;
+      skelGrp.name = `${skel.name}/${skel.modelName}`;
       skelGrp.position.x = offset;
       offset += 512;
 
       mbr.subMeshes.forEach(sub => {
-        if (blk.strings.indexOf(sub.name) != -1) {
+        if (skel.bones.indexOf(sub.name) != -1) {
           let mesh = this._createMesh(sub.vertices, sub.faces);
           mesh.position.set(sub.position.x, sub.position.y, -sub.position.z);
           mesh.name = sub.name;

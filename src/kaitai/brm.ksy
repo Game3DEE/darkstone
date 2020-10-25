@@ -20,7 +20,7 @@ types:
         type: u4
       - id: name
         type: strz
-        size: 60 # a lot of additional info
+        size: 60
       - id: float3
         type: f4
         repeat: expr
