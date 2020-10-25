@@ -62,7 +62,7 @@ types:
         type: u4
       - id: val24
         type: u4
-      - id: model
+      - id: skeleton_name
         type: strz
         size: 64
       - id: val25
