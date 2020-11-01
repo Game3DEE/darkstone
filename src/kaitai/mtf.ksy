@@ -1,22 +1,29 @@
 meta:
   id: darkstone_mtf
+  title: Darkstone Archive format
+  application: All Darkstone versions
   file-extension: mtf
   encoding: utf8
   endian: le
 
-types:
-  string:
-    seq:
-      - id: len
-        type: u4
-      - id: text
-        type: strz
-        size: len
+seq:
+  - id: file_count
+    type: u4
+  - id: files
+    type: file
+    repeat: expr
+    repeat-expr: file_count
+    # After this follows the actual file data
+    # see the instances of type 'file' for details
 
+types:
   file:
     seq:
+      - id: name_len
+        type: u4
       - id: name
-        type: string
+        type: strz
+        size: name_len
       - id: offset
         type: u4
       - id: size
@@ -41,13 +48,3 @@ types:
       - id: decompressed_size
         type: u4
         if: magic == 0x0BADBEAF
-
-seq:
-  - id: file_count
-    type: u4
-  - id: files
-    type: file
-    repeat: expr
-    repeat-expr: file_count
-    # After this follows the actual file data
-    # see the instances of type 'file' for details

@@ -65,7 +65,7 @@ export default class AssetManager {
     let fileMap = new Map();
     mtf.files.forEach(f => {
       // Convert uppercase windows path to a lowercase *NIX path
-      let name = win2nixFilename(f.name.text);
+      let name = win2nixFilename(f.name);
       // and store it in the map
       fileMap.set(name, f);
     })
@@ -118,7 +118,7 @@ export default class AssetManager {
           }
   
           if (bytesLeft < 0) {
-            throw `${file.name.text} has a size mismatch on decompression`;
+            throw `${file.name} has a size mismatch on decompression`;
           }
         }
       }

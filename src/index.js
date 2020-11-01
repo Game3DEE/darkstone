@@ -4,6 +4,8 @@ import {
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
+
+  DirectionalLight,
 } from 'three';
 
 import Stats from 'stats.js';
@@ -119,10 +121,9 @@ function init() {
   camera = new PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 100900);
   camera.position.set(-728, 1695, 4616);
 
-  /*
   // lights
 
-  var light = new SpotLight(0xdfebff, 1);
+  var light = new DirectionalLight(0xdfebff, 1);
   light.position.set(50, 200, 100);
   light.position.multiplyScalar(1.3);
 
@@ -141,7 +142,6 @@ function init() {
   light.shadow.camera.far = 1000;
 
   scene.add(light);
-  */
 
   // renderer
 
@@ -221,6 +221,10 @@ async function dropHandler(ev) {
       let url = URL.createObjectURL(file)
       let buf = await (await fetch(url)).arrayBuffer()
       addArchive(buf, file.name)
+    } else if (ext.toLowerCase() === 'mlv') {
+      let url = URL.createObjectURL(file)
+      let buf = await (await fetch(url)).arrayBuffer()
+      selectObject( meshFactory.createMLV(buf, file.name) );
     }
   }
 

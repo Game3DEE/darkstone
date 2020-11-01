@@ -1,6 +1,7 @@
 import O3D from './kaitai/o3d.ksy';
 import MBR from './kaitai/mbr.ksy';
 import SKA from './kaitai/ska.ksy';
+import MLV from './kaitai/mlv.ksy';
 
 import KaitaiStream from 'kaitai-struct/KaitaiStream';
 
@@ -10,6 +11,7 @@ import {
   Group,
   Mesh,
   MeshBasicMaterial,
+  MeshLambertMaterial,
   Texture,
 } from 'three';
 
@@ -74,6 +76,13 @@ export default class MeshFactory {
     return group;
   }
 
+  createMLV(arrayBuffer, filename) {
+    let mlv = new MLV(new KaitaiStream(arrayBuffer));
+    let mesh = this._createMesh(mlv.vertices, mlv.faces);
+    mesh.name = filename;
+    return mesh;
+  }
+
   createMesh(arrayBuffer, filename) {
     let model = new O3D(new KaitaiStream(arrayBuffer));
     let mesh = this._createMesh(model.vertices, model.faces)
@@ -102,7 +111,7 @@ export default class MeshFactory {
         // console.log(f.flags);
         let map = this.getTexture(texNumber);
         materials.push(
-          new MeshBasicMaterial({ transparent: true, alphaTest: 0.5, map })
+          new MeshLambertMaterial({ transparent: true, alphaTest: 0.5, map })
         )
       }
 
