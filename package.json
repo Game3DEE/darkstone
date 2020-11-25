@@ -25,7 +25,7 @@
   },
   "homepage": "https://game3dee.github.io/darkstone/",
   "devDependencies": {
-    "@babel/core": "^7.12.8",
+    "@babel/core": "^7.12.9",
     "@babel/preset-env": "^7.12.1",
     "babel-loader": "^8.2.1",
     "clean-webpack-plugin": "^3.0.0",
