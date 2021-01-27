@@ -20,9 +20,9 @@ types:
         type: u2
       - id: level
         type: u2
-      - id: level_min
+      - id: hp_min
         type: u4
-      - id: level_max
+      - id: hp_max
         type: u4
       - id: ac
         type: u4
