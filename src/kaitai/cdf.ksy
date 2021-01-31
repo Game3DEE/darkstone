@@ -108,7 +108,7 @@ types:
       - id: rotation
         type: u4
       - id: data
-        type: u4
+        type: s4
         repeat: expr
         repeat-expr: data_count
       - id: name
