@@ -17,8 +17,9 @@ const blockGridSize = 512;
 const trapGridSize = blockGridSize / 3;
 
 export default class RoomFactory {
-  constructor(meshFactory) {
+  constructor(meshFactory, monsterFactory) {
     this.meshFactory = meshFactory;
+    this.monsterFactory = monsterFactory;
   }
 
   clear() {
@@ -77,6 +78,10 @@ export default class RoomFactory {
           room.add(mesh);
         }
       }
+    })
+
+    cdf.monsters.forEach(monster => {
+      console.log( this.monsterFactory.getMonsterClass(monster.name) );
     })
 
     return room;

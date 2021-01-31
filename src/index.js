@@ -16,6 +16,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import AssetManager from './AssetManager';
 import MeshFactory from './MeshFactory';
 import RoomFactory from './RoomFactory';
+import MonsterFactory from './MonsterFactory';
 
 const DemoMTFPath = 'assets/ddata.mtf';
 const defaultDemoRoom = 'data/cbs/town.cdf';
@@ -31,7 +32,8 @@ var demoFolder = null;
 
 var assetManager = new AssetManager();
 var meshFactory = new MeshFactory(assetManager);
-var roomFactory = new RoomFactory(meshFactory);
+var monsterFactory = new MonsterFactory(assetManager, meshFactory);
+var roomFactory = new RoomFactory(meshFactory, monsterFactory);
 
 function selectObject(object) {
   if (currentObject) {
@@ -65,6 +67,9 @@ function addArchive(buffer, name, defaultRoom) {
   }
   // Add archive to asset manager
   let arch = assetManager.addArchive(buffer, name);
+
+  monsterFactory.reset(); // make it load from new archive
+  
   // Add it to our UI
   let settings = {
     room: defaultRoom || '',
