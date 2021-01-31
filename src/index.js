@@ -99,7 +99,8 @@ function addArchive(buffer, name, defaultRoom) {
   af.add(settings, 'character', skeletons).onFinishChange(path => {
     let skaBuffer = assetManager.getFile(`${path}.ska`)
     let mbrBuffer = assetManager.getFile(`${path}.mbr`)
-    let mesh = meshFactory.createModel(mbrBuffer, skaBuffer, path)
+    let anbBuffer = assetManager.getFile(`${path}.anb`)
+    let mesh = meshFactory.createModel(mbrBuffer, skaBuffer, anbBuffer, path)
     selectObject(mesh)
   });
 

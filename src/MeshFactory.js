@@ -45,9 +45,10 @@ export default class MeshFactory {
     return mesh.clone();
   }
 
-  createModel(mbrBuffer, skaBuffer, filename) {
+  createModel(mbrBuffer, skaBuffer, anbBuffer, filename) {
     let mbr = new MBR(new KaitaiStream(mbrBuffer));
     let ska = new SKA(new KaitaiStream(skaBuffer));
+    let anb = new ANB(new KaitaiStream(anbBuffer));
 
     let group = new Group();
     group.name = filename;
@@ -72,6 +73,32 @@ export default class MeshFactory {
 
       group.add(skelGrp);
     })
+
+    let animations = [];
+    let euler = new THREE.Euler();
+    let qaut = new THREE.Quaternion();
+    anb.animations.forEach(anim => {
+      let tracks = [];
+
+      anim.partNames.forEach((name,i) => {
+        let times = [];
+        let values = [];
+        anim.keyFrames.forEach(frame => {
+          let eul = frame.eulers[i];
+          euler.set(eul.x, eul.y, eul.z);
+          qaut.setFromEuler(euler);
+          values.push(quat.x, qaut.y, quat.z, quat.w);
+          times.push(frame.timing / 60);
+        })
+        tracks.push(  
+          new THREE.QuaternionKeyframeTrack(`${name}.quaternion`, times, values)
+        )
+      })
+
+      animations.push(
+        new THREE.AnimationClip(anim.name, anim.maxTiming / 60, tracks)
+      );
+    });
 
     return group;
   }

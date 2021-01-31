@@ -19,13 +19,13 @@ types:
       - id: timing
         type: u4
       - contents: [ 1, 0 ]
-      - id: count
+      - id: euler_count
         type: u4
       - id: v1
         type: vector3f
       - id: v2
         type: vector3f
-      - id: vertices
+      - id: eulers
         type: vector3f
         repeat: expr
         repeat-expr: count
@@ -43,11 +43,11 @@ types:
     - id: model_type_name
       type: strz
       size: 64
-    - id: val1
+    - id: bigval
       type: u4
-    - id: val2
+    - id: max_timing
       type: u4
-    - id: val3
+    - id: min_timing
       type: u4
     - id: val4
       type: u4
@@ -68,10 +68,11 @@ types:
       type: key_frame
       repeat: expr
       repeat-expr: key_frame_count
-    - id: ffs
+    - id: values
       type: u4
       repeat: expr
-      repeat-expr: 4
+      repeat-expr: "(version == 3) ? 4 : 1"
+      if: version > 1
 
 seq:
   - contents: [ 1, 0]
