@@ -14,7 +14,7 @@ export default class MonsterFactory {
       const parsed = new MonsterClass(new KaitaiStream(buf));
       this.classes = new Map();
       parsed.classes.forEach(cl => {
-        this.classes.set(cl.id.toUpperCase(), cl);
+        this.classes.set(cl.id_dsqe.toUpperCase(), cl);
       })
       console.log(this.classes);
     }
