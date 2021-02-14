@@ -168,15 +168,8 @@ types:
       - id: val40
         type: u4
 
-        #Enemy Spell Resistance.
-          #BYTE 0..3 = Enemy Spell Resistance [
-            #Byte 0: Mutation, Stone, Wall of Fire, Slowness, Thunder, Fear, Confusion.
-            #Byte 1: Flame Thrower, Absorption, Fire Ball, Magic Missile.
-            #Byte 2: Spark, Death Dome.
-            #Byte 3: Poison Cloud, Magic Bomb, Forgetfulness.
-            #I have a list that contains every spell combination that I've found this far.
-          #]
-          #BYTE 4..7 = ?? []
+      #Enemy Spell Resistance.
+      #Read: §2 for more info.
       - id: enemy_spell_resistance_and_unknown
         size: 8
 
@@ -322,3 +315,52 @@ seq:
 #]
 #
 #BYTE 2-3 = ?? []
+#_______________________________________________________________________________
+#§2 |
+#___|
+#
+#BYTE 0 = [
+#	bit 0 = Confusion
+#	bit 1 = NULL
+#	bit 2 = Fear
+#	bit 3 = Thunder
+#	bit 4 = Slowness
+#	bit 5 = Wall of Fire
+#	bit 6 = Mutation
+#	bit 7 = Stone
+#]
+#
+#BYTE 1 = [
+#	bit 0 = NULL
+#	bit 1 = NULL
+#	bit 2 = Magic Missile
+#	bit 3 = Fire Ball
+#	bit 4 = Absorption
+#	bit 5 = NULL
+#	bit 6 = Flame Thrower
+#	bit 7 = NULL
+#]
+#
+#BYTE 2 = [
+#	bit 0 = NULL
+#	bit 1 = Death Dome
+#	bit 2 = NULL
+#	bit 3 = Spark
+#	bit 4 = NULL
+#	bit 5 = NULL
+#	bit 6 = NULL
+#	bit 7 = NULL
+#]
+#
+#BYTE 3 = [
+#	bit 0 = Forgetfulness
+#	bit 1 = NULL
+#	bit 2 = Magic Bomb
+#	bit 3 = NULL
+#	bit 4 = Poison Cloud
+#	bit 5 = NULL
+#	bit 6 = NULL
+#	bit 7 = NULL
+#]
+#
+#BYTE 4..7 = ?? []
