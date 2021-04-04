@@ -222,7 +222,10 @@ types:
       - id: durability_max
         type: u2
         
-      - id: data10
+      #Item is identified flag.
+      #0 = unidentified, 1 = identified.
+      #Gets cleared at startup.
+      - id: b_identified
         type: u4
         
       #Enable "Cursed Item" mode for armour and weapons.
@@ -409,7 +412,8 @@ seq:
 #]
 #
 #BYTE 1 = ?? [
-#  bit 0..6 = ??
+#  bit 0 = Larsac The Usurer shop (unused)
+#  bit 1..6 = ??
 #  bit 7 = Item will not despawn from shop after 16 levels visited over item level.
 #]
 #
