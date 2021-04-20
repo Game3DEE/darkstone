@@ -57,13 +57,24 @@ types:
       - id: equipment_type
         type: u2
         
-      - id: data4
+      #Sprite index in DATA\TRISPRITE.DAT
+      #The game will overwrite this with the correct sprite index at startup.
+      - id: sprite_index
         type: u2
+        
+      #Item sprite used in DS Quest Editor / Game.
+      #Gets the name from DATA\TRISPRITE.DAT
       - id: sprite_name
         type: strz
         size: 32
-      - id: data5
+        
+      #Mesh index in DATA\OBJ3D.DAT
+      #The game will overwrite this with the correct mesh index at startup.
+      - id: mesh_index
         type: u2
+        
+      #Item mesh used in game.
+      #Gets the name from DATA\OBJ3D.DAT
       - id: mesh_name
         type: strz
         size: 32
