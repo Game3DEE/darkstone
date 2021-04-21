@@ -403,7 +403,8 @@ seq:
 #0x30 = Prayer
 #0x31 = Detection
 #0x32 = Master of Arms
-#0x33 = Communion
+#0x33 = Communion (Priestess) [NATURE]
+#0x34 = Communion (Sorceress) [ELEMENT]
 #0x35 = Language
 #0x36 = Lycanthropy
 #_______________________________________________________________________________
