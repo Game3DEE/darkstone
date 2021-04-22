@@ -197,8 +197,13 @@ types:
         
       - id: data7
         type: u2
-      - id: data8
-        type: u2
+        
+      #Link items in inventory that is identical to the item held in belt.
+      #0          = Not in inventory/belt
+      #-1         = Inventory
+      #0x3A..0x3D = Belt[0..3]
+      - id: corresponding_belt_index
+        type: s2
         
       #Required strength.
       - id: req_strength
