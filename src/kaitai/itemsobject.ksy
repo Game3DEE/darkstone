@@ -83,11 +83,10 @@ types:
       #(Probably for something else too).
       - id: food_and_unknown
         type: u4
-      
-      #Item static price in shop and the amount of gold in a gold stack.
-      #Only for items with static price, e.g Food and Potions.
-      - id: price_static
-        type: u4
+        
+      #Item price in shop and the amount of gold in a gold stack.
+      - id: price
+        type: s4
         
       - id: attr_dmg_min
         type: u2
