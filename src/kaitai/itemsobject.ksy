@@ -194,7 +194,9 @@ types:
       - id: attr_add_dmg_max
         type: u2
         
-      - id: data7
+      #Item is found by being picked up or identified.
+      #Quest / TownQuest items only.
+      - id: b_found
         type: u2
         
       #Link items in inventory that is identical to the item held in belt.
