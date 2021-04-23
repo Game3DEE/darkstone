@@ -411,6 +411,9 @@ seq:
 #0x34 = Communion (Sorceress) [ELEMENT]
 #0x35 = Language
 #0x36 = Lycanthropy
+#
+#[Misc]
+#0x37 = Concentration Rune [RUNEFIXATION]
 #_______________________________________________________________________________
 #§3 |
 #___|
