@@ -302,7 +302,10 @@ types:
         type: u4
       - id: data16
         type: u4
-      - id: data17
+        
+      #An unique ID for the specific item.
+      #Item->uniqueID = i + timeGetTime(); return ++i;
+      - id: unique_id
         type: u4
 
 seq:
