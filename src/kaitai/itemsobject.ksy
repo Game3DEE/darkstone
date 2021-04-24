@@ -298,8 +298,10 @@ types:
         type: strz
         size: 32
         
-      - id: data15
-        type: u4
+      #Item durability: x/0.
+      - id: durability_cur
+        type: f4
+        
       - id: data16
         type: u4
         
