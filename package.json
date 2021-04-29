@@ -32,7 +32,7 @@
     "copy-webpack-plugin": "^8.1.1",
     "html-webpack-plugin": "^5.3.1",
     "kaitai-struct-loader": "github:EvanPurkhiser/kaitai-struct-loader",
-    "webpack": "^5.35.0",
+    "webpack": "^5.36.1",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
   },
