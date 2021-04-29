@@ -57,13 +57,24 @@ types:
       - id: equipment_type
         type: u2
         
-      - id: data4
+      #Sprite index in DATA\TRISPRITE.DAT
+      #The game will overwrite this with the correct sprite index at startup.
+      - id: sprite_index
         type: u2
+        
+      #Item sprite used in DS Quest Editor / Game.
+      #Gets the name from DATA\TRISPRITE.DAT
       - id: sprite_name
         type: strz
         size: 32
-      - id: data5
+        
+      #Mesh index in DATA\OBJ3D.DAT
+      #The game will overwrite this with the correct mesh index at startup.
+      - id: mesh_index
         type: u2
+        
+      #Item mesh used in game.
+      #Gets the name from DATA\OBJ3D.DAT
       - id: mesh_name
         type: strz
         size: 32
@@ -72,11 +83,10 @@ types:
       #(Probably for something else too).
       - id: food_and_unknown
         type: u4
-      
-      #Item static price in shop and the amount of gold in a gold stack.
-      #Only for items with static price, e.g Food and Potions.
-      - id: price_static
-        type: u4
+        
+      #Item price in shop and the amount of gold in a gold stack.
+      - id: price
+        type: s4
         
       - id: attr_dmg_min
         type: u2
@@ -184,10 +194,17 @@ types:
       - id: attr_add_dmg_max
         type: u2
         
-      - id: data7
+      #Item is found by being picked up or identified.
+      #Quest / TownQuest items only.
+      - id: b_found
         type: u2
-      - id: data8
-        type: u2
+        
+      #Link items in inventory that is identical to the item held in belt.
+      #0          = Not in inventory/belt
+      #-1         = Inventory
+      #0x3A..0x3D = Belt[0..3]
+      - id: corresponding_belt_index
+        type: s2
         
       #Required strength.
       - id: req_strength
@@ -281,11 +298,16 @@ types:
         type: strz
         size: 32
         
-      - id: data15
-        type: u4
+      #Item durability: x/0.
+      - id: durability_cur
+        type: f4
+        
       - id: data16
         type: u4
-      - id: data17
+        
+      #An unique ID for the specific item.
+      #Item->uniqueID = i + timeGetTime(); return ++i;
+      - id: unique_id
         type: u4
 
 seq:
@@ -392,9 +414,13 @@ seq:
 #0x30 = Prayer
 #0x31 = Detection
 #0x32 = Master of Arms
-#0x33 = Communion
+#0x33 = Communion (Priestess) [NATURE]
+#0x34 = Communion (Sorceress) [ELEMENT]
 #0x35 = Language
 #0x36 = Lycanthropy
+#
+#[Misc]
+#0x37 = Concentration Rune [RUNEFIXATION]
 #_______________________________________________________________________________
 #§3 |
 #___|
