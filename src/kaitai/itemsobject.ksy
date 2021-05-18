@@ -12,7 +12,9 @@ types:
         doc: valid values [1..16]
       - id: data0
         type: u4
-      - id: data1
+        
+      #The level where the dropped item is located.
+      - id: pos_level
         type: u2
       
       #Item id in DS Quest Editor.
@@ -20,9 +22,12 @@ types:
         type: strz
         size: 32
         
-      - id: data2
+      #Item's X-position (East / West)
+      - id: pos_x
         type: u4
-      - id: data3
+        
+      #Item's Z-position (North / South)
+      - id: pos_z
         type: u4
         
       #Item name in game.
@@ -275,8 +280,9 @@ types:
       - id: weapon_kind
         type: u2
         
-      - id: data13
-        type: u4
+      #Item's Y-position (Elevation)
+      - id: pos_y
+        type: f4
         
       #Read: §3 for more info.
       - id: data14
