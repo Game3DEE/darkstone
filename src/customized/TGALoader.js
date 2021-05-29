@@ -1,21 +1,18 @@
 // Made changes to handl RGB 0/0/0 as transparent
+// Made into ES6 class
+
 import {
 	FileLoader,
 	Loader,
 	Texture
 } from "three";
 
-var TGALoader = function ( manager ) {
+export class TGALoader extends Loader {
+	constructor(manager) {
+		super(manager);
+	}
 
-	Loader.call( this, manager );
-
-};
-
-TGALoader.prototype = Object.assign( Object.create( Loader.prototype ), {
-
-	constructor: TGALoader,
-
-	load: function ( url, onLoad, onProgress, onError ) {
+	load( url, onLoad, onProgress, onError ) {
 
 		var scope = this;
 
@@ -41,9 +38,9 @@ TGALoader.prototype = Object.assign( Object.create( Loader.prototype ), {
 
 		return texture;
 
-	},
+	}
 
-	parse: function ( buffer ) {
+	parse( buffer ) {
 
 		// reference from vthibault, https://github.com/vthibault/roBrowser/blob/master/src/Loaders/Targa.js
 
@@ -547,6 +544,4 @@ TGALoader.prototype = Object.assign( Object.create( Loader.prototype ), {
 
 	}
 
-} );
-
-export { TGALoader };
+}
