@@ -28,7 +28,7 @@ types:
       - id: eulers
         type: vector3f
         repeat: expr
-        repeat-expr: count
+        repeat-expr: euler_count
 
   animation:
     seq:

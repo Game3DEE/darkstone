@@ -2,16 +2,21 @@ import O3D from './kaitai/o3d.ksy';
 import MBR from './kaitai/mbr.ksy';
 import SKA from './kaitai/ska.ksy';
 import MLV from './kaitai/mlv.ksy';
+import ANB from './kaitai/anb.ksy';
 
 import KaitaiStream from 'kaitai-struct/KaitaiStream';
 
 import {
+  AnimationClip,
   BufferGeometry,
+  Euler,
   Float32BufferAttribute,
   Group,
   Mesh,
   MeshBasicMaterial,
   MeshLambertMaterial,
+  Quaternion,
+  QuaternionKeyframeTrack,
   Texture,
 } from 'three';
 
@@ -75,8 +80,8 @@ export default class MeshFactory {
     })
 
     let animations = [];
-    let euler = new THREE.Euler();
-    let qaut = new THREE.Quaternion();
+    let euler = new Euler();
+    let quat = new Quaternion();
     anb.animations.forEach(anim => {
       let tracks = [];
 
@@ -86,17 +91,17 @@ export default class MeshFactory {
         anim.keyFrames.forEach(frame => {
           let eul = frame.eulers[i];
           euler.set(eul.x, eul.y, eul.z);
-          qaut.setFromEuler(euler);
-          values.push(quat.x, qaut.y, quat.z, quat.w);
+          quat.setFromEuler(euler);
+          values.push(quat.x, quat.y, quat.z, quat.w);
           times.push(frame.timing / 60);
         })
         tracks.push(  
-          new THREE.QuaternionKeyframeTrack(`${name}.quaternion`, times, values)
+          new QuaternionKeyframeTrack(`${name}.quaternion`, times, values)
         )
       })
 
       animations.push(
-        new THREE.AnimationClip(anim.name, anim.maxTiming / 60, tracks)
+        new AnimationClip(anim.name, anim.maxTiming / 60, tracks)
       );
     });
 
