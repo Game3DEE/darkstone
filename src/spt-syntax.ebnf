@@ -1,0 +1,115 @@
+SPT = quest | trap | path ;
+
+(* Common definitions *)
+flag_list = identifier |
+             flag_list, '|', identifier
+             ; 
+            
+damage_values = number, { ',', number }
+                ;
+
+(* Quest and quest sub objects *)
+
+quest = 'QUEST', '{', { quest_prop }, '}' ;
+quest_prop =   'KEY', '{', identifier, '}' |
+                'QUESTINTRO', i8n_string |
+                'ENTRANCE', '{', identifier, '}' |
+                'LAND', '{', number '}' |  (* 1-7 *)
+                'LINK', '{', identifier, ',', identifier, '}' | (* ITEM_XX, ITEM_YY *)
+                'QUESTNAME' i8n_string |
+                agent |
+                object |
+                room
+                ;
+
+room = 'ROOM' '{' { room_prop } '}' ;
+room_prop =    'KEY' '{' identifier '}' |
+                'LOCATION' '{' ('outside' | 'inside') '}' |
+                'LEVEL' '{' number '}' |
+                'FLAGS' '{' flag_list '}' |
+                'NAME' i8n_string |
+                'LIFE' '{' number '}' |
+                'DAMAGE' '{' damage_values '}'
+                ;
+
+
+object = 'OBJECT' '{' { object_prop } '}' ;
+object_prop =  'KEY' '{' identifier '}' |
+                'CONTAINER' '{' identifier '}' |
+                'PARENT' '{' identifier '}' | # ITEM_XXX | TCXXXX
+                'FLAG' '{' flag_list '}' |
+                'NAME' i8n_string |
+                'NAME2' i8n_string |
+                'MAGIC' '{' identifier '}' # Always LETTER ?
+                ;
+
+
+agent = 'AGENT' '{' { agent_prop } '}' ;
+agent_prop =   'KEY' '{' identifier '}' |
+                'FLAG' '{' flag_list '}' |
+                'LIFE' '{' number '}' |
+                'LIVE' '{' number '}' |
+                'BOOST' '{' number '}' |
+                'DAMAGE' '{' damage_values '}' |
+                'GIVE' '{' identifier '}' |
+                'PATH' '{' identifier '}' |
+                'TRACK' '{' identifier '}' |
+                'ROOM' '{' identifier '}' |
+                'ANIM' '{' identifier '}' |
+                'NAME' i8n_string |
+                'TXT0' i8n_string |
+                'TXT1' i8n_string |
+                'TXT2' i8n_string |
+                'TXT3' i8n_string ;
+
+(* Path & path nodes *)
+
+path = 'PATH' '{' { path_prop } '}' ;
+path_prop =    'KEY' '{' identifier '}' |
+                'FLAG' '{' flag_list '}' |
+                node
+                ;
+
+node = 'NODE' '{' node_prop '}' ;
+node_prop =    'KEY' '{' identifier '}' |
+                'ANIM' '{' identifier '}' |
+                'SKEL' '{' identifier '}' |
+                'WAIT' '{' number '}'
+                ;
+
+(* Traps *)
+
+trap = 'TRAP' '{' trap_prop '}' ;
+trap_prop =    'KEY' '{' identifier '}' |
+                'FLAG' '{' flag_list '}' |
+                'SKELFILE' '{' identifier '}' |
+                'NAME' i8n_string |
+                state
+                ;
+
+state = 'STATE' '{' state_prop '}' ;
+state_prop =   'KEY' '{' identifier '}' |
+                'FLAG' '{' flag_list '}' |
+                'CHANGELEVEL' '{' number '}' | # always 0?
+                'CONDITION' '{' identifier '}' |
+                'TEXT' i8n_string |
+                'GOTO' '{' identifier '}' |
+                'SETLOWCOLLID' '{' ('0'|'1') '}' | # always 1?
+                'SETCOLLID' '{' ('0'|'1'|'2') '}' |
+                'CLEARCOLLID' '{' ('1'|'2') '}' |
+                'SKELFILE' '{' identifier '}' |
+                'SKELNAME' '{' identifier '}' |
+                'SKELFILE' '{' identifier '}' |
+                'SKELANIM' '{' identifier '}' |
+                'FRAME' '{' identifier '}' |
+                'JUMP' '{' identifier '}' |
+                'FAIL' i8n_string |
+                'FAILPANEL' i8n_string |
+                'TEXTPANEL' i8n_string |
+                'OBJECT' '{' identifier '}' | # ITEM_XXXX
+                'MSG' '{' number '}' | # 0..3 => TXT0..TXT3
+                multi |
+                action
+                ;
+
+(* TODO: multi / action *)
