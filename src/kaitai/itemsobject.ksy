@@ -22,11 +22,13 @@ types:
         type: strz
         size: 32
         
-      #Item's X-position (East / West)
+      #Item's drop X-position (East / West)
+      #Item's X-position in player's inventory grid.
       - id: pos_x
         type: u4
         
-      #Item's Z-position (North / South)
+      #Item's drop Z-position (North / South)
+      #Item's Y-position in player's inventory grid.
       - id: pos_z
         type: u4
         
@@ -140,9 +142,9 @@ types:
       - id: attr_ac_pct
         type: u2
         
-      #Item Enchantment / Curse / Usable items(Right Click) / (Quest Items?)
+      #Item Enchantment: Usable items(Right Click) / Bless / Curse / Object class.
       #Read: §1 for more info.
-      - id: enchantment3
+      - id: enchantment3_magic
         type: u2
         
       #Gives item a Spell / Skill.
@@ -280,7 +282,9 @@ types:
       - id: weapon_kind
         type: u2
         
-      #Item's Y-position (Elevation)
+      #Item's drop Y-position (Elevation)
+      #Item's respawn time(ms) in shop after purchase.
+      #RespawnTime = Item->Price (min/max: 200.0f..5000.0f)
       - id: pos_y
         type: f4
         
@@ -329,18 +333,28 @@ seq:
 #§1 |
 #___|
 #
-#0x02 = Healing Potion
-#0x04 = Mana Potion
-#0x05 = Elixir of Strength
-#0x06 = Elixir of Magic
-#0x07 = Elixir of Dexterity
-#0x09 = Elixir of Youth
-#0x0A = Scroll(Spell:enchantment4_spell_skill(Offset D4-D5))
-#0x0B = The Time Orb
-#0x0C = Elixir of Vitality
-#0x0D = Vial of Poison
-#0x0E = Antidote Potion
-#0x0F = Potion of Surprise
+#Note: The keyword between the curly brackets are used by the .SPT/.DSM scripts to get/set the respective bit.
+#      Script(get): TRAP { STATE { MULTI { CONDITION { SENSEOBJMAGIC {KEYWORD}}}}}
+#      Script(set): QUEST { OBJECT { MAGIC {KEYWORD}}}
+#
+#[Magical items]
+#0x01 = Full Healing Potion  { POTION_FULL_HEALING }
+#0x02 = Healing Potion       { POTION_HEALING }
+#0x03 = Full Mana Potion     { POTION_FULL_MANA }
+#0x04 = Mana Potion          { POTION_MANA }
+#0x05 = Elixir of Strength   { ELIXIR_STRENGTH }
+#0x06 = Elixir of Magic      { ELIXIR_MAGIC }
+#0x07 = Elixir of Dexterity  { ELIXIR_DEXTERITY }
+#0x08 = Full Elixir of Youth { POTION_FULL_REJUV }
+#0x09 = Elixir of Youth      { POTION_REJUV }
+#0x0A = Scroll(Spell:enchantment4_spell_skill(Offset D4-D5)). { SCROLL }
+#0x0B = The Time Orb         { SPECIAL1 }
+#0x0C = Elixir of Vitality   { ELIXIR_VITALITY }
+#0x0D = Vial of Poison       { POTION_POISON }
+#0x0E = Antidote Potion      { POTION_ANTIPOISON }
+#0x0F = Potion of Surprise   { POTION_SURPRISE }
+#
+#[Bless / Curse]
 #0x24 = Old Age
 #0x25 = Unease
 #0x26 = Slow Motion
@@ -350,19 +364,23 @@ seq:
 #0x2A = Quick Mana Recovery
 #0x2B = Poison's Effects Slowed Down
 #0x2C = Light Aura
-#0x2D = Leaking Pockets(equipped)
+#0x2D = Leaking Pockets
 #0x2E = Spell Duration Increased
 #0x2F = Permenant Perception
 #0x30 = Mana Shield
 #0x31 = Eternal Youth
-#0x32 = ??
-#0x33 = Use Spell Book
-#0x34 = ??
-#0x35 = ??
-#0x38 = Chicken Leg(Horn of Plenty)
-#0x39 = Empty Scroll(Right click to attach spell)
-#0x3A = Concentration Rune/(ITEM_RUNFIXATION) Behavior
-#0x3B = Food
+#
+#[Object Class]
+#0x32 = STAFF     { STAFF }
+#0x33 = SpellBook { BOOK }
+#0x34 = RING      { RING }
+#0x35 = AMULET    { AMULET }
+#0x36 = SPELL     { SPELL }
+#0x38 = Chicken Leg(Horn of Plenty)               { ABONDANCE }
+#0x39 = Empty Scroll(Right click to attach spell) { PARCHEMIN }
+#0x3A = Concentration Rune/(ITEM_RUNFIXATION)     { FIXATION }
+#0x3B = Food      { FOOD }
+#0x3C = Letter    { LETTER }
 #_______________________________________________________________________________
 #§2 |
 #___|
@@ -431,22 +449,39 @@ seq:
 #§3 |
 #___|
 #
-#BYTE 0 = Shop / Quest item / ?? [
+#Note: The keyword between the curly brackets are used by the .SPT scripts to set the respective bit.
+#      Script: QUEST { OBJECT { FLAG {KEYWORD}}}
+#
+#BYTE 0 = Shop / Quest item [
 #  0x00 = Hide in Shop / DS Editor
-#  bit 0 = Gunther The Blacksmith
-#  bit 1 = Master Elmeric
-#  bit 2 = Perry The Publican
-#  bit 3 = ?? (Might have something to do with quest items)
-#  bit 4 = ??
-#  bit 5 = Quest Item Behavior. Bit0..2 will be ignored.
-#  bit 6 = ??
-#  bit 7 = ??
+#  bit 0 = Gunther The Blacksmith { STORE_FORGERON }
+#  bit 1 = Master Elmeric         { FLAG_STORE_MAGICIEN }
+#  bit 2 = Perry The Publican     { STORE_TAVERNE }
+#  bit 3 = Custom Object          { CUSTOM }
+#  bit 4 = Virtual Object         { VIRTUAL }
+#  bit 5 = Quest Object           { QUEST }
+#  bit 6 = ??                     { FEMININ }
+#  bit 7 = Town Quest Object
 #]
 #
-#BYTE 1 = ?? [
+#BYTE 1 = Shop / Drop [
 #  bit 0 = Larsac The Usurer shop (unused)
-#  bit 1..6 = ??
-#  bit 7 = Item will not despawn from shop after 16 levels visited over item level.
+#  bit 1 = ??
+#  bit 2 = Item tier: Normal                { GIVE_NORMAL }
+#  bit 3 = Item tier: Good                  { GIVE_GOOD }
+#  bit 4 = Item tier: Extra                 { GIVE_EXTRA }
+#  bit 5 = Item tier: Magic [BookStand]     { GIVE_MAGIC }
+#  bit 6 = Generate enchantments (See note) { GENERATE }
+#  bit 7 = Item will not despawn from shop after 16 levels visited over item level. { APPEAR }
+#
+#Note:
+#  Allow random enchantments to be generated on the item.
+#  If Bit7=1 then Bit6 will be set to 0 (only for items in shop).
+#  Bit6:0 = Item can't be enchanted but will respawn in shop after purchase.
+#           See Item->posY for info about the respawn time.
+#  Bit6:1 = Item can be enchanted but won't respawn in shop after purchase
+#           until the shop rerolls all its items (player enters a new dungeon).
+#           If the shop item doesn't get enchanted, then Bit6 will be set to 0.
 #]
 #
 #BYTE 2 = Gunther The Blacksmith: Shop category [
