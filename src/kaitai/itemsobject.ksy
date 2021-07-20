@@ -256,9 +256,22 @@ types:
       - id: b_cursed
         type: u4
         
-      - id: data11
+      #Makes the color for items info text in the description box darker red to
+      #indicate that it has good enchantments.
+      #Items are limited to 2 enchantments per item. (Improved durability
+      #doesn't count as an enchantment.)
+      #If the item has got improved attributes/stats, then this bool indicates
+      #that it also has an extra bonus added ontop of it.
+      #(Some items have this set to true without any enchantments/improvements.)
+      - id: b_has_good_enchantment
         type: u4
-      - id: data12
+        
+      #Makes the color for items info text in the description box light red.
+      #Pulsating glow effect in shop.
+      #Can be detected with the "Detection" spell/skill.
+      #Item has got improved attributes/stats. (Improved durability isn't included.)
+      #(Some items have this set to true without any enchantments/improvements.)
+      - id: b_emphasize
         type: u4
         
       #Equipped equipment will be using this mesh/piece.
