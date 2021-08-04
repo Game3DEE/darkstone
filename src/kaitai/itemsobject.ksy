@@ -86,10 +86,17 @@ types:
         type: strz
         size: 32
       
-      #Food. The amount of "Food" an item will give if you eat it.
-      #(Probably for something else too).
-      - id: food_and_unknown
-        type: u4
+      #Item base price is based on the item's basic stats.
+      #Used to calculate the sell price for unidentified items.
+      #The amount of "Food" an item will give if it's eaten.
+      #
+      #Weapon:
+      #  v1 = 3 * Item->attrDmgMax + 2 * Item->attrDmgMin;
+      #  basePrice = Item->durabilityMax * v1 * 0.75);
+      #Shield/Armour:
+      #  basePrice = Item->durabilityMax * (4 * Item->attrAc) * 0.75);
+      - id: base_price_and_food
+        type: s4
         
       #Item price in shop and the amount of gold in a gold stack.
       - id: price
@@ -350,7 +357,7 @@ seq:
 #      Script(get): TRAP { STATE { MULTI { CONDITION { SENSEOBJMAGIC {KEYWORD}}}}}
 #      Script(set): QUEST { OBJECT { MAGIC {KEYWORD}}}
 #
-#[Magical items]
+#[Magical items] (Items that can be added to player's quick belt)
 #0x01 = Full Healing Potion  { POTION_FULL_HEALING }
 #0x02 = Healing Potion       { POTION_HEALING }
 #0x03 = Full Mana Potion     { POTION_FULL_MANA }
