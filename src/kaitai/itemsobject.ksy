@@ -67,7 +67,7 @@ types:
       #Sprite index in DATA\TRISPRITE.DAT
       #The game will overwrite this with the correct sprite index at startup.
       - id: sprite_index
-        type: u2
+        type: s2
         
       #Item sprite used in DS Quest Editor / Game.
       #Gets the name from DATA\TRISPRITE.DAT
@@ -78,7 +78,7 @@ types:
       #Mesh index in DATA\OBJ3D.DAT
       #The game will overwrite this with the correct mesh index at startup.
       - id: mesh_index
-        type: u2
+        type: s2
         
       #Item mesh used in game.
       #Gets the name from DATA\OBJ3D.DAT
@@ -103,11 +103,11 @@ types:
         type: s4
         
       - id: attr_dmg_min
-        type: u2
+        type: s2
       - id: attr_ac
-        type: u2
+        type: s2
       - id: attr_dmg_max
-        type: u2
+        type: s2
         
       #Weapon Enchantment 1.
       #0x00 = Off
@@ -139,15 +139,15 @@ types:
       
       #+%Damage. Only works on weapons.
       - id: attr_dmg_pct
-        type: u2
+        type: s2
         
       #+% to hit.
       - id: attr_to_hit
-        type: u2
+        type: s2
         
       #+% Armour.
       - id: attr_ac_pct
-        type: u2
+        type: s2
         
       #Item Enchantment: Usable items(Right Click) / Bless / Curse / Object class.
       #Read: §1 for more info.
@@ -161,52 +161,52 @@ types:
         
       #+x to Strength.
       - id: attr_strength
-        type: u2
+        type: s2
       
       #+x to Magic.
       - id: attr_magic
-        type: u2
+        type: s2
         
       #+x to Dexterity.
       - id: attr_dexterity
-        type: u2
+        type: s2
         
       #+x to Vitality.
       - id: attr_vitality
-        type: u2
+        type: s2
         
       #+% Fire resistance.
       - id: attr_resist_fire
-        type: u2
+        type: s2
         
       #+% Poison resistance.
       - id: attr_resist_poison
-        type: u2
+        type: s2
         
       #+% Magic resistance.
       - id: attr_resist_magic
-        type: u2
+        type: s2
         
       #+x to Mana.
       - id: attr_mana
-        type: u2
+        type: s2
         
       #+x to Life.
       - id: attr_life
-        type: u2
+        type: s2
         
       #+% Light Radius.
       #Don't know what this does in game.
       - id: attr_light_radius
-        type: u2
+        type: s2
         
       #Adds x-0 damage points.
       - id: attr_add_dmg_min
-        type: u2
+        type: s2
         
       #Adds 0-x damage points.
       - id: attr_add_dmg_max
-        type: u2
+        type: s2
         
       #Item is found by being picked up or identified.
       #Quest / TownQuest items only.
@@ -222,36 +222,36 @@ types:
         
       #Required strength.
       - id: req_strength
-        type: u2
+        type: s2
         
       #Required magic.
       - id: req_magic
-        type: u2
+        type: s2
         
       #Required dexterity.
       - id: req_dexterity
-        type: u2
+        type: s2
         
       #Required vitality.
       - id: req_vitality
-        type: u2
+        type: s2
         
       #Item enchanted with a spell, Mana: x/0.
       #Variable "enchantment4_spell_skill" need to be 0x01 or higher.
       - id: spell_mana_current
-        type: u2
+        type: s2
         
       #Item enchanted with a spell, Mana: 0/x.
       #Variable "enchantment4_spell_skill" need to be 0x01 or higher.
       - id: spell_mana_max
-        type: u2
+        type: s2
         
       - id: data9
         type: u2
         
       #Item durability: 0/x.
       - id: durability_max
-        type: u2
+        type: s2
         
       #Item is identified flag.
       #0 = unidentified, 1 = identified.
@@ -316,7 +316,7 @@ types:
       #Delay when the item will be available in the shop.
       #The items identification price in Madame Irma's shop might be based on this.
       - id: level
-        type: u4
+        type: s4
         
       - id: snd_pickup
         type: strz
