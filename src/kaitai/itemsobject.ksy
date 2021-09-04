@@ -134,7 +134,8 @@ types:
       - id: enchantment2_weapon
         type: u2
       
-      - id: data6
+      #Unused - Might have been intended as a damage related attribute.
+      - id: unused1
         type: u2
       
       #+%Damage. Only works on weapons.
@@ -246,10 +247,13 @@ types:
       - id: spell_mana_max
         type: s2
         
-      - id: data9
+      #Unused - Might have been intended for something durability related
+      #since its values are very similar to durabilityMax.
+      - id: unused2
         type: u2
         
       #Item durability: 0/x.
+      #Negative values = Indestructible.
       - id: durability_max
         type: s2
         
