@@ -308,8 +308,9 @@ types:
       - id: pos_y
         type: f4
         
+      #Item Drop, Shop, Quest configuration (bit field).
       #Read: §3 for more info.
-      - id: data14
+      - id: config
         type: u4
         
       #Drop level.
