@@ -42,9 +42,11 @@ types:
         type: u2
         
       - id: hp_min
-        type: u4
+        type: s4
+        doc: valid values [1..32000]
       - id: hp_max
-        type: u4
+        type: s4
+        doc: valid values [1..32000]
       - id: ac
         type: u4
       - id: to_hit
