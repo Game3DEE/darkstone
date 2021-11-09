@@ -26,20 +26,20 @@
   "homepage": "https://game3dee.github.io/darkstone/",
   "devDependencies": {
     "@babel/core": "^7.16.0",
-    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-env": "^7.16.0",
     "babel-loader": "^8.2.3",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^9.0.1",
     "html-webpack-plugin": "^5.5.0",
     "kaitai-struct-loader": "github:EvanPurkhiser/kaitai-struct-loader",
-    "webpack": "^5.60.0",
+    "webpack": "^5.62.2",
     "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^4.3.1"
+    "webpack-dev-server": "^4.4.0"
   },
   "dependencies": {
     "dat.gui": "^0.7.7",
     "kaitai-struct": "^0.9.0",
     "stats.js": "^0.17.0",
-    "three": "^0.133.1"
+    "three": "^0.134.0"
   }
 }
