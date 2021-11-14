@@ -232,7 +232,13 @@ types:
         type: u4
       - id: val48
         type: u4
-      - id: val49
+        
+      #Each byte represents the percentage of the player's "% toHit" that will
+      #be used to try to hit the monster depending on the damage type that's
+      #inflicted by player's weapon. See Item.damageType for more info.
+      #Math: toHit = (player.attrToHit * damageTypeVulnerability) /100
+      #Byte: 0 = Crushing, 1 = Slashing, 2 = Piercing, 3..15 = Unused
+      - id: damage_type_vulnerability
         size: 16
 
 seq:
