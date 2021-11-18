@@ -345,7 +345,11 @@ types:
       - id: durability_cur
         type: f4
         
-      - id: data16
+      #Weapon damage type (bit field).
+      #0..1 = Crushing, 2 = Slashing, 4 = Piercing.
+      #The item "ITEM_TORCHE" is the only weapon that has damageType = 0.
+      #See Monster.damageTypeVulnerability for more info.
+      - id: damage_type
         type: u4
         
       #An unique ID for the specific item.
