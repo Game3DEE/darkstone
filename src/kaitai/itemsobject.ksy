@@ -10,13 +10,21 @@ types:
       - id: version
         type: u2
         doc: valid values [1..16]
-      - id: data0
+        
+      #Each item object is split into 10 parts and the order(format) which these
+      #parts are saved/loaded within the .lpl/.sav files depend on this seed.
+      #
+      #Note: Variables "version" and "formatSeed" aren't part of these 10 parts.
+      #
+      #A new seed is generated every time the item is saved.
+      #formatSeed = timeGetTime();
+      - id: format_seed
         type: u4
         
       #The level where the dropped item is located.
       - id: pos_level
         type: u2
-      
+        
       #Item id in DS Quest Editor.
       - id: id_dsqe
         type: strz
@@ -319,7 +327,7 @@ types:
         
       #Drop level.
       #Delay when the item will be available in the shop.
-      #The items identification price in Madame Irma's shop might be based on this.
+      #The items identification price in Madame Irma's shop is based on this.
       - id: level
         type: s4
         
@@ -337,7 +345,11 @@ types:
       - id: durability_cur
         type: f4
         
-      - id: data16
+      #Weapon damage type (bit field).
+      #0..1 = Crushing, 2 = Slashing, 4 = Piercing.
+      #The item "ITEM_TORCHE" is the only weapon that has damageType = 0.
+      #See Monster.damageTypeVulnerability for more info.
+      - id: damage_type
         type: u4
         
       #An unique ID for the specific item.
