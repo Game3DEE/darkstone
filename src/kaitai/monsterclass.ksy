@@ -163,9 +163,14 @@ types:
         
       - id: val38
         type: u4
-      - id: string2
+        
+      #The item that will be dropped by custom monsters made with QuestEdit.
+      #The .SPT scripts writes to this.
+      #Script: QUEST { AGENT { GIVE { Item.id_dsqe }}}
+      - id: item_to_drop
         type: strz
         size: 32
+        
       - id: val39
         type: u4
       - id: val40
