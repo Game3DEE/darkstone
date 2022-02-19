@@ -37,7 +37,7 @@
     "webpack-dev-server": "^4.7.4"
   },
   "dependencies": {
-    "dat.gui": "^0.7.7",
+    "dat.gui": "^0.7.9",
     "kaitai-struct": "^0.9.0",
     "stats.js": "^0.17.0",
     "three": "^0.134.0"
