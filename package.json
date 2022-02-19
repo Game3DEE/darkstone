@@ -29,7 +29,7 @@
     "@babel/preset-env": "^7.16.4",
     "babel-loader": "^8.2.3",
     "clean-webpack-plugin": "^4.0.0",
-    "copy-webpack-plugin": "^10.0.0",
+    "copy-webpack-plugin": "^10.2.4",
     "html-webpack-plugin": "^5.5.0",
     "kaitai-struct-loader": "github:EvanPurkhiser/kaitai-struct-loader",
     "webpack": "^5.69.1",
