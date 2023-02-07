@@ -44,8 +44,24 @@ types:
         type: u2
         repeat: expr
         repeat-expr: 4
+        
+      #BYTE 0 [
+      #  bit0 = Textured
+      #  bit2 = Gouraud
+      #  bit3 = Transparent
+      #  bit4 = Translucide
+      #  bit5 = Z-Correction
+      #  bit7 = Halfbrite
+      #]
+      #BYTE 1 [
+      #  bit0 = Invisible
+      #  bit2 = Emitter
+      #  bit4 = Unlit
+      #  bit5 = Reflection
+      #]
       - id: flags
         type: u4
+        
       - id: tex_number
         type: u2
 
