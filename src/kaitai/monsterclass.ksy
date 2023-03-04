@@ -109,8 +109,11 @@ types:
       - id: skeleton_name
         type: strz
         size: 64
-      - id: val25
-        type: u4
+        
+      #Skeleton rotation offset.
+      - id: skeleton_rotation
+        type: f4
+        doc: valid values [-3.14..3.14]
         
       #Unknown, DATA\PCLASS\MONSTER.TXT
       - id: chaapp
