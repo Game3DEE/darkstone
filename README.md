@@ -1,6 +1,6 @@
 # darkstone
 
-![Build and Deploy](https://github.com/Game3DEE/darkstone/workflows/Build%20and%20Deploy/badge.svg)
+[![Build and Deploy](https://github.com/Game3DEE/darkstone/actions/workflows/main.yml/badge.svg)](https://github.com/Game3DEE/darkstone/actions/workflows/main.yml)
 
 Online reimplementation of [Darkstone](https://wikipedia.org/wiki/Darkstone)  using WebGL
 
