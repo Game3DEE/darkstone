@@ -8,7 +8,7 @@ module.exports = {
   devtool: 'inline-source-map',
   entry: './src/index.js',
   devServer: {
-    contentBase: './dist',
+    static: './dist',
     host: '0.0.0.0', // allow "public" access
     port: 7000,
   },
