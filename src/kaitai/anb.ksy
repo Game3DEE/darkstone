@@ -18,7 +18,8 @@ types:
     seq:
       - id: timing
         type: u4
-      - contents: [ 1, 0 ]
+      - id: version
+        contents: [ 1, 0 ]
       - id: euler_count
         type: u4
       - id: v1
@@ -75,7 +76,8 @@ types:
       if: version > 1
 
 seq:
-  - contents: [ 1, 0]
+  - id: magic
+    contents: [ 1, 0]
   - id: animation_count
     type: u4
   - id: animations

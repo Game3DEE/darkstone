@@ -250,7 +250,8 @@ types:
         size: 16
 
 seq:
-  - contents: [ 1, 0 ]
+  - id: version
+    contents: [ 1, 0 ]
   - id: count
     type: u4
   - id: classes

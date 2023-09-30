@@ -5,7 +5,8 @@ meta:
   encoding: utf8
 
 seq:
-  - contents: [ "CDF", 0 ]
+  - id: magic
+    contents: [ "CDF", 0 ]
   - id: version
     type: u4
   - id: min_x
@@ -39,8 +40,10 @@ seq:
     repeat: expr
     repeat-expr: monster_count
     # effectively the CBS file from the Quest Maker
-  - contents: [ "CBS", 0 ]
-  - contents: [ 1, 0, 0, 0 ]
+  - id: cbs_magic
+    contents: [ "CBS", 0 ]
+  - id: cbs_version
+    contents: [ 1, 0, 0, 0 ]
   - id: cbs_object_count
     type: u4
   - id: cbs_objects
@@ -75,7 +78,8 @@ types:
       - id: path
         type: strz
         size: 512
-      - contents: [ 1, 0, 0, 0 ]
+      - id: version
+        contents: [ 1, 0, 0, 0 ]
         
   cbs_object:
     seq:

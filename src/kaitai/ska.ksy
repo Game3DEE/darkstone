@@ -13,7 +13,8 @@ doc: |
 types:
   skeleton:
     seq:
-      - contents: [ 1, 0 ]
+      - id: version
+        contents: [ 1, 0 ]
       - id: name
         type: strz
         size: 64
@@ -27,7 +28,8 @@ types:
         repeat-expr: 64
 
 seq:
-  - contents: [ 1, 0 ]
+  - id: version
+    contents: [ 1, 0 ]
   - id: count
     type: u4
   - id: skeletons

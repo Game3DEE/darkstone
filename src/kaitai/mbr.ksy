@@ -125,7 +125,8 @@ types:
       if: version == 2
 
 seq:
-  - contents: [ 1, 0 ]
+  - id: version
+    contents: [ 1, 0 ]
   - id: submesh_count
     type: u4
   - id: sub_meshes
