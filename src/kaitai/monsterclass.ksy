@@ -143,8 +143,9 @@ types:
       - id: val33
         type: u4
         
+      #Configure monster/NPC behavior, ability, pathing and gender.
       #Read: §1 for more info.
-      - id: val34
+      - id: config
         type: u4
         
       - id: val35
@@ -263,76 +264,40 @@ seq:
 #§1 |
 #___|
 #
-#BYTE 0 = Monster ability/behavior & NPC voice/gender [
-#  [Monster]
-#  0x*0..0x*3, 0x*8..0x*B              = Will spawn automatically in game.
-#  0x*4..0x*7, 0x*C..0x*F, 0x90..0xFF  = Won't spawn automatically in game.
+#Note: The command between the square brackets are used by the .SPT scripts to set the respective bit.
+#      Script: QUEST { AGENT { COMMAND } }
 #
-#  Terror = "Here ends your reign or terror, %monsterName%!".
-#  DRAAK  = Gives monster Light, DRAAKs healing, SFX and sound.
-#           If the monster is killed then the endgame cutscene will be played,
-#           endgame items drops and spawns Sebastian.
-#           Won't spawn automatically in game.
-#  Poison = Gives the monster Poison ability.
-#
-#  0x00 = Off
-#  0x01 = Terror
-#  0x02 = Off
-#  0x03 = Terror
-#  0x04 = DRAAK
-#  0x05 = DRAAK + Terror
-#  0x06 = DRAAK
-#  0x07 = DRAAK + Terror
-#  0x08 = Poison
-#  0x09 = Poison + Terror
-#  0x0A = Poison
-#  0x0B = Poison + Terror
-#  0x0C = Poison + DRAAK
-#  0x0D = Poison + DRAAK + Terror
-#  0x0E = Poison + DRAAK
-#  0x0F = Poison + DRAAK + Terror
-#  ...
-#  0xFF = Poison + DRAAK + Terror
-#
-#
-#  [NPC/Shop]
-#  Test done on PNJ1(Garth) in town.
-#  NPCs with "Light Effect On" has a tendency to walk away while talking.
-#  The usage of opposite voice/gender will result in skeleton and animation problems.
-#
-#  Low Nibble = Light Effect [
-#    0x*0..0x*3, 0x*8..0x*B = Off
-#    0x*4..0x*7, 0x*C..0x*F = Light
-#  ]
-#
-#  High Nibble = Voice/Gender [
-#    0x0*, 0x8*                         = Male Voice.
-#    0x1*, 0x3*..0x7*, 0x9*, 0xB*..0xF* = Won't spawn automatically.
-#    0x2*, 0xA*                         = Female Voice.
-#  ]
+#BYTE 0 = [
+#  bit 0 = isTownQuestMonster
+#  bit 1 = NULL
+#  bit 2 = isDraak
+#  bit 3 = isPoisonous
+#  bit 4 = isNonInteractive
+#  bit 5 = isFemale     (Use NPC skeletons/animations prefixed with "f")
+#  bit 6 = isQuestAgent             [ QUEST { AGENT { ... }} ]
+#  bit 7 = followPlayer (See note)  [ FLAG { FOLLOW } ]
 #]
 #
-#BYTE 1 = NPC behavior & Body Effects(SFX) [
-#  [NPC]
-#  Low Nibble = NPC behavior [
-#    0x*0..0x*3 = Spawns in town with town NPCs behavior.
-#    0x*4..0x*7 = Spawns in town with town NPCs behavior but is standing still.
-#    0x*8..0x*B = NPC follows its scripts and paths.
-#    0x*C..0x*F = NPC follows its scripts but is standing still.
-#  ]
-#
-#  [Monster/NPC/Shop]
-#  High Nibble = Body Effects [
-#    0x0* = Off
-#    0x1* = Fire
-#    0x2* = Ice
-#    0x3* = Fire
-#    ...
-#    0xF* = Fire
-#  ]
+#BYTE 1 = [
+#  bit 0 = auto (See note)  [ FLAG { AUTO } ]
+#  bit 1 = followPath       [ FLAG { PATH } ], [ PATH { PATH_KEY_ID } ]
+#  bit 2 = isStatic         [ FLAG { STATIC } ]
+#  bit 3 = isTownGuide
+#  bit 4 = bodyEffectFire
+#  bit 5 = bodyEffectIce
+#  bit 6 = NULL
+#  bit 7 = NULL
 #]
 #
-#BYTE 2-3 = ?? []
+#Note:
+#  Requires:
+#  trackNode = TRACK { TRAP_KEY_ID }
+#  item = Monster.item_to_drop
+#
+#  NPC will follow the player until the trackNode position is found.
+#  The item is then dropped and used to trigger next quest trap/state code block.
+#  If Byte1.bit0 = false, then player has to manually click on NPC to trigger item drop.
+#  If Byte1.bit0 = true, then the quest will automatically proceed by auto dropping the item. (item must be virtual)
 #_______________________________________________________________________________
 #§2 |
 #___|
